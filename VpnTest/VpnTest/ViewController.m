@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import <NetworkExtension/NetworkExtension.h>
+#import "Reachability.h"
 #define server @"108.61.180.50"
 #define ID @"chenziqiang01"
 #define pwd @"18607114709"
@@ -20,24 +21,27 @@
 //    秘钥：tksw123
 @interface ViewController ()
 @property(strong,nonatomic)NEVPNManager *vpnManager;
+@property (nonatomic, strong) Reachability *conn;
+@property (nonatomic,assign) BOOL checkVPN;//检查VPN断线重连
 @end
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-  
-    [self createKeychainValue:pwd forIdentifier:@"vpnPassWord"];
-    [self createKeychainValue:privateKey forIdentifier:@"sharedKey"];
-   
     [self setUp];
 }
 
 -(void)setUp{
+    self.checkVPN = YES;
+    [self createKeychainValue:pwd forIdentifier:@"vpnPassWord"];
+    [self createKeychainValue:privateKey forIdentifier:@"sharedKey"];
     self.vpnManager = [NEVPNManager sharedManager];
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkStateChange) name:kReachabilityChangedNotification object:nil];
+    self.conn = [Reachability reachabilityForInternetConnection];
+    [self.conn startNotifier];
+    
+    
     [_vpnManager loadFromPreferencesWithCompletionHandler:^(NSError *error) {
-        
-        
         if (error) {
             NSLog(@"Load config failed [%@]", error.localizedDescription);
             return;
@@ -46,9 +50,9 @@
         NEVPNProtocolIPSec *p = (NEVPNProtocolIPSec*)_vpnManager.protocol;
         
         if (p) {
-         
+            
         } else {
-           
+            
             p = [[NEVPNProtocolIPSec alloc] init];
         }
         
@@ -56,7 +60,7 @@
         p.serverAddress = server;
         
         p.passwordReference = [self searchKeychainCopyMatching:@"vpnPassWord"];
-     
+        
         p.authenticationMethod = NEVPNIKEAuthenticationMethodSharedSecret;
         p.sharedSecretReference = [self searchKeychainCopyMatching:@"sharedKey"];
         p.useExtendedAuthentication = YES;
@@ -76,18 +80,61 @@
         }];
     }];
     
+    
+}
+- (void)networkStateChange
+{
+    [self checkNetworkState];
+}
+
+- (void)checkNetworkState
+{
+    // 1.检测wifi状态
+    Reachability *wifi = [Reachability reachabilityForLocalWiFi];
+    
+    // 2.检测手机是否能上网络(WIFI\3G\2.5G)
+    Reachability *conn = [Reachability reachabilityForInternetConnection];
+    
+    // 3.判断网络状态
+    if ([wifi currentReachabilityStatus] != NotReachable) { // 有wifi
+        NSLog(@"有wifi");
+        [self checkVpn];
+    } else if ([conn currentReachabilityStatus] != NotReachable) { // 没有使用wifi, 使用手机自带网络进行上网
+        NSLog(@"使用手机自带网络进行上网");
+        [self checkVPN];
+    } else { // 没有网络
+        NSLog(@"没有网络");
+        [self vpnStop];
+    }
+}
+
+-(void)checkVpn{
+    if (self.checkVPN==YES) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (self.vpnManager.connection.status!=3) {
+                [self vpnStart];
+            }
+        });
+    }
 }
 
 - (IBAction)buttonPressed:(id)sender {
+    [self vpnStart];
+}
+
+- (IBAction)buttonStop:(id)sender {
+    [self vpnStop];
+}
+
+-(void)vpnStart{
     NSError *startError;
     [_vpnManager.connection startVPNTunnelAndReturnError:&startError];
     if (startError) {
         NSLog(@"Start VPN failed: [%@]", startError.localizedDescription);
     }
-    
 }
 
-- (IBAction)buttonStop:(id)sender {
+-(void)vpnStop{
     [_vpnManager.connection stopVPNTunnel];
 }
 

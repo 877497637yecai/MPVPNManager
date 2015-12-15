@@ -15,6 +15,8 @@
 		CC48B2F51C1E9C0900457F92 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC48B2F31C1E9C0900457F92 /* LaunchScreen.storyboard */; };
 		CC48B2FE1C1E9C2500457F92 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC48B2FD1C1E9C2500457F92 /* NetworkExtension.framework */; };
 		CC48B3041C1EB45300457F92 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC48B3031C1EB45300457F92 /* Security.framework */; };
+		CC6E043F1C1FC27900F6E3F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC6E043E1C1FC27900F6E3F2 /* SystemConfiguration.framework */; };
+		CC6E04421C1FC39300F6E3F2 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6E04411C1FC39300F6E3F2 /* Reachability.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,9 @@
 		CC48B2FC1C1E9C1900457F92 /* VpnTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = VpnTest.entitlements; sourceTree = "<group>"; };
 		CC48B2FD1C1E9C2500457F92 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		CC48B3031C1EB45300457F92 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		CC6E043E1C1FC27900F6E3F2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		CC6E04401C1FC39300F6E3F2 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		CC6E04411C1FC39300F6E3F2 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC6E043F1C1FC27900F6E3F2 /* SystemConfiguration.framework in Frameworks */,
 				CC48B3041C1EB45300457F92 /* Security.framework in Frameworks */,
 				CC48B2FE1C1E9C2500457F92 /* NetworkExtension.framework in Frameworks */,
 			);
@@ -49,6 +55,7 @@
 		CC48B2D91C1E9C0900457F92 = {
 			isa = PBXGroup;
 			children = (
+				CC6E043E1C1FC27900F6E3F2 /* SystemConfiguration.framework */,
 				CC48B3031C1EB45300457F92 /* Security.framework */,
 				CC48B2FD1C1E9C2500457F92 /* NetworkExtension.framework */,
 				CC48B2E41C1E9C0900457F92 /* VpnTest */,
@@ -67,6 +74,8 @@
 		CC48B2E41C1E9C0900457F92 /* VpnTest */ = {
 			isa = PBXGroup;
 			children = (
+				CC6E04401C1FC39300F6E3F2 /* Reachability.h */,
+				CC6E04411C1FC39300F6E3F2 /* Reachability.m */,
 				CC48B2FC1C1E9C1900457F92 /* VpnTest.entitlements */,
 				CC48B2E81C1E9C0900457F92 /* AppDelegate.h */,
 				CC48B2E91C1E9C0900457F92 /* AppDelegate.m */,
@@ -173,6 +182,7 @@
 			files = (
 				CC48B2ED1C1E9C0900457F92 /* ViewController.m in Sources */,
 				CC48B2EA1C1E9C0900457F92 /* AppDelegate.m in Sources */,
+				CC6E04421C1FC39300F6E3F2 /* Reachability.m in Sources */,
 				CC48B2E71C1E9C0900457F92 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

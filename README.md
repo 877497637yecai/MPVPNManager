@@ -11,4 +11,18 @@ IOS VPN代理
 * [MOMenuView](https://github.com/MoPellet/MOMenuView)
 
 
+一、项目介绍
+----------
+1、导入NetworkExtension框架
+```c
+#import <NetworkExtension/NetworkExtension.h>
+```
+2、导入Reachability 检测网络状态
+```c
+#import "Reachability.h"
+```
+3、在不越狱的情况下支持 ipsec协议 
+
+
+
 

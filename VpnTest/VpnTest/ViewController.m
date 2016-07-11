@@ -8,21 +8,20 @@
 
 #import "ViewController.h"
 #import <NetworkExtension/NetworkExtension.h>
-#import "Reachability.h"
+#import "AFNetworkReachabilityManager.h"
+
+
+
+
+
+#pragma mark - 定义一些所需参数 可以替换成自己的 可以上淘宝买一个记得 只支持ipsec
 #define server @"108.61.180.50"
 #define ID @"chenziqiang01"
 #define pwd @"18607114709"
 #define privateKey @"tksw123"
-//    vpn 选择 ipsec
-//    描述 随便写
-//    服务器：108.61.180.50
-//    账号 ：chenziqiang01
-//    密码：18607114709
-//    秘钥：tksw123
+
 @interface ViewController ()
 @property(strong,nonatomic)NEVPNManager *vpnManager;
-@property (nonatomic, strong) Reachability *conn;
-@property (nonatomic,assign) BOOL checkVPN;//检查VPN断线重连
 @end
 @implementation ViewController
 
@@ -31,93 +30,60 @@
     [self setUp];
 }
 
--(void)setUp{
-    self.checkVPN = YES;
-    [self createKeychainValue:pwd forIdentifier:@"vpnPassWord"];
-    [self createKeychainValue:privateKey forIdentifier:@"sharedKey"];
-    self.vpnManager = [NEVPNManager sharedManager];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkStateChange) name:kReachabilityChangedNotification object:nil];
-    self.conn = [Reachability reachabilityForInternetConnection];
-    [self.conn startNotifier];
+- (void)setUp{
+    // 将账号密码存入钥匙串
+    {
+        [self createKeychainValue:pwd forIdentifier:@"vpnPassWord"];
+        [self createKeychainValue:privateKey forIdentifier:@"sharedKey"];
+    }
     
-    
-    [_vpnManager loadFromPreferencesWithCompletionHandler:^(NSError *error) {
-        if (error) {
-            NSLog(@"Load config failed [%@]", error.localizedDescription);
-            return;
-        }
-        
-        NEVPNProtocolIPSec *p = (NEVPNProtocolIPSec*)_vpnManager.protocol;
-        
-        if (p) {
-            
-        } else {
-            
-            p = [[NEVPNProtocolIPSec alloc] init];
-        }
-        
-        p.username = ID;
-        p.serverAddress = server;
-        
-        p.passwordReference = [self searchKeychainCopyMatching:@"vpnPassWord"];
-        
-        p.authenticationMethod = NEVPNIKEAuthenticationMethodSharedSecret;
-        p.sharedSecretReference = [self searchKeychainCopyMatching:@"sharedKey"];
-        p.useExtendedAuthentication = YES;
-        p.disconnectOnSleep = NO;
-        
-        _vpnManager.protocol = p;
-        _vpnManager.onDemandEnabled=YES;
-        _vpnManager.localizedDescription = @"IPSec Test";
-        
-        [_vpnManager saveToPreferencesWithCompletionHandler:^(NSError *error) {
-            if(error) {
-                NSLog(@"Save error: %@", error);
+    //  这里才是核心代码 仅支持 ipsec 
+    // 1. 获取NEVPNManager实例
+    // 2. loadFromPreferencesWithCompletionHandler 加载设置
+    // 3. saveToPreferencesWithCompletionHandler 设置并存储设置
+    {
+        self.vpnManager = [NEVPNManager sharedManager];
+        [_vpnManager loadFromPreferencesWithCompletionHandler:^(NSError *error) {
+            if (error) {
+                NSLog(@"Load config failed [%@]", error.localizedDescription);
+                return;
             }
-            else {
-                NSLog(@"Saved!");
+            NEVPNProtocolIPSec *p = (NEVPNProtocolIPSec*)_vpnManager.protocol;
+            if (!p) {
+                p = [[NEVPNProtocolIPSec alloc] init];
             }
+            
+            p.username = ID;
+            p.serverAddress = server;
+            p.passwordReference = [self searchKeychainCopyMatching:@"vpnPassWord"];
+            p.authenticationMethod = NEVPNIKEAuthenticationMethodSharedSecret;
+            p.sharedSecretReference = [self searchKeychainCopyMatching:@"sharedKey"];
+            p.useExtendedAuthentication = YES;
+            p.disconnectOnSleep = NO;
+            _vpnManager.protocol = p;
+            _vpnManager.onDemandEnabled=YES;
+            _vpnManager.localizedDescription = @"IPSec Test"; //设置VPN的名字 可以自定义
+            
+            // 一定要保存
+            [_vpnManager saveToPreferencesWithCompletionHandler:^(NSError *error) {
+                if(error) {
+                    NSLog(@"Save error: %@", error);
+                }
+                else {
+                    NSLog(@"Saved!");
+                }
+            }];
         }];
-    }];
-    
-    
-}
-- (void)networkStateChange
-{
-    [self checkNetworkState];
-}
-
-- (void)checkNetworkState
-{
-    // 1.检测wifi状态
-    Reachability *wifi = [Reachability reachabilityForLocalWiFi];
-    
-    // 2.检测手机是否能上网络(WIFI\3G\2.5G)
-    Reachability *conn = [Reachability reachabilityForInternetConnection];
-    
-    // 3.判断网络状态
-    if ([wifi currentReachabilityStatus] != NotReachable) { // 有wifi
-        NSLog(@"有wifi");
-        [self checkVpn];
-    } else if ([conn currentReachabilityStatus] != NotReachable) { // 没有使用wifi, 使用手机自带网络进行上网
-        NSLog(@"使用手机自带网络进行上网");
-        [self checkVPN];
-    } else { // 没有网络
-        NSLog(@"没有网络");
-        [self vpnStop];
     }
+    
+    
+    //检测网络 自动重连 （可选）
+    [self performSelector:@selector(registerNetWorkReachability) withObject:nil afterDelay:0.35f];
 }
 
--(void)checkVpn{
-    if (self.checkVPN==YES) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            if (self.vpnManager.connection.status!=3) {
-                [self vpnStart];
-            }
-        });
-    }
-}
 
+#pragma mark -
+#pragma mark - 操作方法 BEGIN
 - (IBAction)buttonPressed:(id)sender {
     [self vpnStart];
 }
@@ -137,10 +103,36 @@
 -(void)vpnStop{
     [_vpnManager.connection stopVPNTunnel];
 }
+#pragma mark - 操作方法 END
 
-#pragma mark - KeyChain
+#pragma mark -
+#pragma mark - 自动重连 BEGIN
+- (void)registerNetWorkReachability{
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetWork) name:AFNetworkingReachabilityDidChangeNotification object:nil];
+    
+}
+/**
+ *  检测网络
+ */
+-(void)checkNetWork{
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        if (status == AFNetworkReachabilityStatusReachableViaWWAN ||
+            status == AFNetworkReachabilityStatusReachableViaWiFi) {
+            if (self.vpnManager.connection.status != NEVPNStatusConnected) {
+                [self vpnStart];
+            }
+        }
+    }];
+}
+#pragma mark - 自动重连 END
 
-static NSString * const serviceName = @"im.zorro.ipsec_demo.vpn_config";
+
+
+#pragma mark -
+#pragma mark - KeyChain BEGIN
+
+static NSString * const serviceName = @"im.zorro.ipsec_demo.vpn_config"; // 可以自定义
 
 - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
     NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
@@ -158,11 +150,7 @@ static NSString * const serviceName = @"im.zorro.ipsec_demo.vpn_config";
 - (NSData *)searchKeychainCopyMatching:(NSString *)identifier {
     NSMutableDictionary *searchDictionary = [self newSearchDictionary:identifier];
     
-    // Add search attributes
     [searchDictionary setObject:(__bridge id)kSecMatchLimitOne forKey:(__bridge id)kSecMatchLimit];
-    
-    // Add search return types
-    // Must be persistent ref !!!!
     [searchDictionary setObject:@YES forKey:(__bridge id)kSecReturnPersistentRef];
     
     CFTypeRef result = NULL;
@@ -186,4 +174,6 @@ static NSString * const serviceName = @"im.zorro.ipsec_demo.vpn_config";
     }
     return NO;
 }
+#pragma mark - KeyChain END
+
 @end

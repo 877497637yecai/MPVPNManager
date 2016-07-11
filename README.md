@@ -55,6 +55,9 @@ MoVPNManage * vpnManage = [MoVPNManage shareVPNManage];
 二、相关资料
 * [谈谈 iOS8 中的 Network Extension](http://blog.zorro.im/posts/iOS8-Network-Extension.html)
 * [Configure and manage VPN connections programmatically in iOS 8](http://ramezanpour.net/post/2014/08/03/configure-and-manage-vpn-connections-programmatically-in-ios-8/)
+
+方便的话可以捐赠点银子给我买VPS 
+![](pay.jpg)
     
 
 

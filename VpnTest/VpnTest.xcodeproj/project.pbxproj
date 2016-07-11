@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A4E9669F1D336235000524B7 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A4E9669E1D336235000524B7 /* AFNetworkReachabilityManager.m */; };
+		A4E966A21D336A29000524B7 /* MoVPNManage.m in Sources */ = {isa = PBXBuildFile; fileRef = A4E966A11D336A29000524B7 /* MoVPNManage.m */; };
 		CC48B2E71C1E9C0900457F92 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CC48B2E61C1E9C0900457F92 /* main.m */; };
 		CC48B2EA1C1E9C0900457F92 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CC48B2E91C1E9C0900457F92 /* AppDelegate.m */; };
 		CC48B2ED1C1E9C0900457F92 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC48B2EC1C1E9C0900457F92 /* ViewController.m */; };
@@ -22,6 +23,8 @@
 /* Begin PBXFileReference section */
 		A4E9669D1D336235000524B7 /* AFNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkReachabilityManager.h; sourceTree = "<group>"; };
 		A4E9669E1D336235000524B7 /* AFNetworkReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkReachabilityManager.m; sourceTree = "<group>"; };
+		A4E966A01D336A29000524B7 /* MoVPNManage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoVPNManage.h; sourceTree = "<group>"; };
+		A4E966A11D336A29000524B7 /* MoVPNManage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoVPNManage.m; sourceTree = "<group>"; };
 		CC48B2E21C1E9C0900457F92 /* VpnTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VpnTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC48B2E61C1E9C0900457F92 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CC48B2E81C1E9C0900457F92 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -81,6 +84,8 @@
 				CC48B2E91C1E9C0900457F92 /* AppDelegate.m */,
 				CC48B2EB1C1E9C0900457F92 /* ViewController.h */,
 				CC48B2EC1C1E9C0900457F92 /* ViewController.m */,
+				A4E966A01D336A29000524B7 /* MoVPNManage.h */,
+				A4E966A11D336A29000524B7 /* MoVPNManage.m */,
 				CC48B2EE1C1E9C0900457F92 /* Main.storyboard */,
 				CC48B2F11C1E9C0900457F92 /* Assets.xcassets */,
 				CC48B2F31C1E9C0900457F92 /* LaunchScreen.storyboard */,
@@ -181,6 +186,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC48B2ED1C1E9C0900457F92 /* ViewController.m in Sources */,
+				A4E966A21D336A29000524B7 /* MoVPNManage.m in Sources */,
 				CC48B2EA1C1E9C0900457F92 /* AppDelegate.m in Sources */,
 				A4E9669F1D336235000524B7 /* AFNetworkReachabilityManager.m in Sources */,
 				CC48B2E71C1E9C0900457F92 /* main.m in Sources */,

@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "MoVPNManage.h"
-
+#import <NetworkExtension/NetworkExtension.h>
 @implementation ViewController
 
 - (void)viewDidLoad {
@@ -24,6 +24,33 @@
             [vpnManage vpnStart];
         }
     }];
+    
+    
+    
+    // ios 9 参考
+    {
+        NETunnelProviderManager * manager = [[NETunnelProviderManager alloc] init];
+        NETunnelProviderProtocol * protocol = [[NETunnelProviderProtocol alloc] init];
+        protocol.providerBundleIdentifier = @"com.mopellet.Vpn";
+        
+        protocol.providerConfiguration = @{@"key":@"value"};
+        protocol.serverAddress = @"server";
+        manager.protocolConfiguration = protocol;
+        [manager saveToPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
+            
+        }];
+        
+        NETunnelProviderSession * session = (NETunnelProviderSession *)manager.connection;
+        NSDictionary * options = @{@"key" : @"value"};
+        
+        NSError * err;
+        [session startTunnelWithOptions:options andReturnError:&err];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSLog(@"%ld",(long)manager.connection.status);
+        });
+    }
+    
 }
 
 #pragma mark - 操作方法 BEGIN

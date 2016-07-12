@@ -12,11 +12,6 @@
 
 
 #pragma mark - 定义一些所需参数 可以替换成自己的 可以上淘宝买一个记得 只支持ipsec
-//#define server @"108.61.180.50"
-//#define ID @"chenziqiang01"
-//#define pwd @"18607114709"
-//#define privateKey @"tksw123"
-
 static NSString * const VPN_PwdIdentifier = @"vpnPassWord"; // 可以自定义
 static NSString * const VPN_PrivateKeyIdentifier = @"sharedKey"; // 可以自定义
 static NSString * const serviceName = @"im.zorro.ipsec_demo.vpn_config"; // 可以自定义

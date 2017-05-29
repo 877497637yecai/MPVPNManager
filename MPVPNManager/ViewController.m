@@ -22,6 +22,9 @@
     [super viewDidLoad];
     
     
+    //  https://github.com/MoPellet  更多项目详情点击进入
+    // 您的star就是对我开发最大的动力
+    
     //初始化配置信息
     MPVPNConfig *config = [MPVPNConfig new];
     config.configTitle = @"MPVPNManager";

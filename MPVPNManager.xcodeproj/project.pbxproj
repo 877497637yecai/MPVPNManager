@@ -13,8 +13,8 @@
 		CC197D061EDC863600ACA743 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC197D041EDC863600ACA743 /* Main.storyboard */; };
 		CC197D081EDC863600ACA743 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC197D071EDC863600ACA743 /* Assets.xcassets */; };
 		CC197D0B1EDC863600ACA743 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC197D091EDC863600ACA743 /* LaunchScreen.storyboard */; };
-		CCA750891EDC9AFE000E6524 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA750861EDC9AFE000E6524 /* AFNetworkReachabilityManager.m */; };
-		CCA7508A1EDC9AFE000E6524 /* MPVPNManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA750881EDC9AFE000E6524 /* MPVPNManager.m */; };
+		CCA750911EDC9DC6000E6524 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA7508D1EDC9DC6000E6524 /* AFNetworkReachabilityManager.m */; };
+		CCA750921EDC9DC6000E6524 /* MPVPNManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA750901EDC9DC6000E6524 /* MPVPNManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,11 +28,11 @@
 		CC197D071EDC863600ACA743 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CC197D0A1EDC863600ACA743 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CC197D0C1EDC863600ACA743 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CC197D181EDC86E700ACA743 /* config.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = config.entitlements; sourceTree = "<group>"; };
-		CCA750851EDC9AFE000E6524 /* AFNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkReachabilityManager.h; sourceTree = "<group>"; };
-		CCA750861EDC9AFE000E6524 /* AFNetworkReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkReachabilityManager.m; sourceTree = "<group>"; };
-		CCA750871EDC9AFE000E6524 /* MPVPNManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPVPNManager.h; sourceTree = "<group>"; };
-		CCA750881EDC9AFE000E6524 /* MPVPNManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPVPNManager.m; sourceTree = "<group>"; };
+		CCA7508C1EDC9DC6000E6524 /* AFNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkReachabilityManager.h; sourceTree = "<group>"; };
+		CCA7508D1EDC9DC6000E6524 /* AFNetworkReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkReachabilityManager.m; sourceTree = "<group>"; };
+		CCA7508E1EDC9DC6000E6524 /* MPConfig.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = MPConfig.entitlements; sourceTree = "<group>"; };
+		CCA7508F1EDC9DC6000E6524 /* MPVPNManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPVPNManager.h; sourceTree = "<group>"; };
+		CCA750901EDC9DC6000E6524 /* MPVPNManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPVPNManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,8 +65,7 @@
 		CC197CFA1EDC863600ACA743 /* MPVPNManager */ = {
 			isa = PBXGroup;
 			children = (
-				CCA750841EDC9AFE000E6524 /* MPVPNManagerClasses */,
-				CC197D181EDC86E700ACA743 /* config.entitlements */,
+				CCA7508B1EDC9DC6000E6524 /* MPVPNManagerClasses */,
 				CC197CFE1EDC863600ACA743 /* AppDelegate.h */,
 				CC197CFF1EDC863600ACA743 /* AppDelegate.m */,
 				CC197D011EDC863600ACA743 /* ViewController.h */,
@@ -88,17 +87,17 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		CCA750841EDC9AFE000E6524 /* MPVPNManagerClasses */ = {
+		CCA7508B1EDC9DC6000E6524 /* MPVPNManagerClasses */ = {
 			isa = PBXGroup;
 			children = (
-				CCA750851EDC9AFE000E6524 /* AFNetworkReachabilityManager.h */,
-				CCA750861EDC9AFE000E6524 /* AFNetworkReachabilityManager.m */,
-				CCA750871EDC9AFE000E6524 /* MPVPNManager.h */,
-				CCA750881EDC9AFE000E6524 /* MPVPNManager.m */,
+				CCA7508C1EDC9DC6000E6524 /* AFNetworkReachabilityManager.h */,
+				CCA7508D1EDC9DC6000E6524 /* AFNetworkReachabilityManager.m */,
+				CCA7508E1EDC9DC6000E6524 /* MPConfig.entitlements */,
+				CCA7508F1EDC9DC6000E6524 /* MPVPNManager.h */,
+				CCA750901EDC9DC6000E6524 /* MPVPNManager.m */,
 			);
-			name = MPVPNManagerClasses;
-			path = ../../MPVPNManagerClasses;
-			sourceTree = "<group>";
+			path = MPVPNManagerClasses;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -172,10 +171,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CCA7508A1EDC9AFE000E6524 /* MPVPNManager.m in Sources */,
+				CCA750921EDC9DC6000E6524 /* MPVPNManager.m in Sources */,
 				CC197D031EDC863600ACA743 /* ViewController.m in Sources */,
 				CC197D001EDC863600ACA743 /* AppDelegate.m in Sources */,
-				CCA750891EDC9AFE000E6524 /* AFNetworkReachabilityManager.m in Sources */,
+				CCA750911EDC9DC6000E6524 /* AFNetworkReachabilityManager.m in Sources */,
 				CC197CFD1EDC863600ACA743 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -298,7 +297,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = MPVPNManager/config.entitlements;
+				CODE_SIGN_ENTITLEMENTS = MPVPNManagerClasses/MPConfig.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 828E9CDH54;
 				INFOPLIST_FILE = MPVPNManager/Info.plist;
@@ -313,7 +312,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = MPVPNManager/config.entitlements;
+				CODE_SIGN_ENTITLEMENTS = MPVPNManagerClasses/MPConfig.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 828E9CDH54;
 				INFOPLIST_FILE = MPVPNManager/Info.plist;

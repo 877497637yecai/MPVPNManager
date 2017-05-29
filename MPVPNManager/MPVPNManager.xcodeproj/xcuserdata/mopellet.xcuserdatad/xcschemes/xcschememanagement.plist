@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>VpnTest.xcscheme</key>
+		<key>MPVPNManager.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,7 +12,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>CC48B2E11C1E9C0900457F92</key>
+		<key>CC197CF71EDC863600ACA743</key>
 		<dict>
 			<key>primary</key>
 			<true/>

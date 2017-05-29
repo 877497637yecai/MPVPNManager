@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0720"
+   LastUpgradeVersion = "0830"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CC48B2E11C1E9C0900457F92"
-               BuildableName = "VpnTest.app"
-               BlueprintName = "VpnTest"
-               ReferencedContainer = "container:VpnTest.xcodeproj">
+               BlueprintIdentifier = "CC197CF71EDC863600ACA743"
+               BuildableName = "MPVPNManager.app"
+               BlueprintName = "MPVPNManager"
+               ReferencedContainer = "container:MPVPNManager.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CC48B2E11C1E9C0900457F92"
-            BuildableName = "VpnTest.app"
-            BlueprintName = "VpnTest"
-            ReferencedContainer = "container:VpnTest.xcodeproj">
+            BlueprintIdentifier = "CC197CF71EDC863600ACA743"
+            BuildableName = "MPVPNManager.app"
+            BlueprintName = "MPVPNManager"
+            ReferencedContainer = "container:MPVPNManager.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -55,10 +55,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CC48B2E11C1E9C0900457F92"
-            BuildableName = "VpnTest.app"
-            BlueprintName = "VpnTest"
-            ReferencedContainer = "container:VpnTest.xcodeproj">
+            BlueprintIdentifier = "CC197CF71EDC863600ACA743"
+            BuildableName = "MPVPNManager.app"
+            BlueprintName = "MPVPNManager"
+            ReferencedContainer = "container:MPVPNManager.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -74,10 +74,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CC48B2E11C1E9C0900457F92"
-            BuildableName = "VpnTest.app"
-            BlueprintName = "VpnTest"
-            ReferencedContainer = "container:VpnTest.xcodeproj">
+            BlueprintIdentifier = "CC197CF71EDC863600ACA743"
+            BuildableName = "MPVPNManager.app"
+            BlueprintName = "MPVPNManager"
+            ReferencedContainer = "container:MPVPNManager.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

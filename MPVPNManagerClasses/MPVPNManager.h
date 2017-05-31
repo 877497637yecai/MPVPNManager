@@ -13,13 +13,15 @@
 
 #import <Foundation/Foundation.h>
 #import <NetworkExtension/NetworkExtension.h>
+#import "MPVPNIKEv2Config.h"
 
 typedef void(^CompleteHandle)(BOOL success , NSString * returnInfo);
 typedef void(^StatusChanged)(enum NEVPNStatus status);
-typedef NS_ENUM(NSInteger, MPVPNManagerStatus){
-    MPVPNManagerStatusUnknow,
-    MPVPNManagerStatusRunning,
-    MPVPNManagerStatusStop
+
+typedef NS_ENUM(NSInteger, MMPVPNManagerType){
+    MMPVPNManagerTypeNone,
+    MMPVPNManagerTypeIPSec,
+    MMPVPNManagerTypeIKEv2,
 };
 
 @class MPVPNConfig;
@@ -27,7 +29,9 @@ typedef NS_ENUM(NSInteger, MPVPNManagerStatus){
 
 + (instancetype)shareInstance;
 /** config info */
-@property (nonatomic, strong) MPVPNConfig *config;
+@property (nonatomic, readonly, strong) MPVPNConfig *config;
+@property (nonatomic, readonly, assign) MMPVPNManagerType vpnType;
+- (void)setConfig:(MPVPNConfig *)config with:(MMPVPNManagerType)vpnType;
 /** run status */
 @property (nonatomic, readonly, assign) enum NEVPNStatus status;
 /** save config */
@@ -37,17 +41,4 @@ typedef NS_ENUM(NSInteger, MPVPNManagerStatus){
 - (void)stop;
 
 @end
-
-@interface MPVPNConfig : NSObject
-@property (nonatomic, copy) NSString *configTitle;
-@property (nonatomic, copy) NSString *serverAddress;
-@property (nonatomic, copy) NSString *username;
-@property (nonatomic, copy) NSString *password;
-@property (nonatomic, copy) NSString *privateKey;
-@end
-
-
-
-
-
 

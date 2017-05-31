@@ -26,15 +26,15 @@
     // 您的star就是对我开发最大的动力
     
     //初始化配置信息
-    MPVPNConfig *config = [MPVPNConfig new];
+    MPVPNIPSecConfig *config = [MPVPNIPSecConfig new];
     config.configTitle = @"MPVPNManager";
     config.serverAddress = @"108.61.180.50";
     config.username = @"chenziqiang01";
     config.password = @"18607114709";
-    config.privateKey = @"tksw123";
+    config.sharePrivateKey = @"tksw123";
     
     _mpVpnManager = [MPVPNManager shareInstance];
-    _mpVpnManager.config = config;
+    [_mpVpnManager setConfig:config with:MMPVPNManagerTypeIPSec];
     [_mpVpnManager saveConfigCompleteHandle:^(BOOL success, NSString *returnInfo) {
         NSLog(@"returnInfo:%@",returnInfo);
         if (success) {

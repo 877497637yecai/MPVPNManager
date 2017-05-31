@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A4E90BDF1EDEAE0D003B86D8 /* MPVPNConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = A4E90BDE1EDEAE0D003B86D8 /* MPVPNConfig.m */; };
+		A4E90BE21EDEAE30003B86D8 /* MPVPNIPSecConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = A4E90BE11EDEAE30003B86D8 /* MPVPNIPSecConfig.m */; };
+		A4E90BE51EDEAE56003B86D8 /* MPVPNIKEv2Config.m in Sources */ = {isa = PBXBuildFile; fileRef = A4E90BE41EDEAE56003B86D8 /* MPVPNIKEv2Config.m */; };
 		CC197CFD1EDC863600ACA743 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CC197CFC1EDC863600ACA743 /* main.m */; };
 		CC197D001EDC863600ACA743 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CC197CFF1EDC863600ACA743 /* AppDelegate.m */; };
 		CC197D031EDC863600ACA743 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC197D021EDC863600ACA743 /* ViewController.m */; };
@@ -18,6 +21,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A4E90BDD1EDEAE0D003B86D8 /* MPVPNConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPVPNConfig.h; sourceTree = "<group>"; };
+		A4E90BDE1EDEAE0D003B86D8 /* MPVPNConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPVPNConfig.m; sourceTree = "<group>"; };
+		A4E90BE01EDEAE30003B86D8 /* MPVPNIPSecConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPVPNIPSecConfig.h; sourceTree = "<group>"; };
+		A4E90BE11EDEAE30003B86D8 /* MPVPNIPSecConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPVPNIPSecConfig.m; sourceTree = "<group>"; };
+		A4E90BE31EDEAE56003B86D8 /* MPVPNIKEv2Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPVPNIKEv2Config.h; sourceTree = "<group>"; };
+		A4E90BE41EDEAE56003B86D8 /* MPVPNIKEv2Config.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPVPNIKEv2Config.m; sourceTree = "<group>"; };
 		CC197CF81EDC863600ACA743 /* MPVPNManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MPVPNManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC197CFC1EDC863600ACA743 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CC197CFE1EDC863600ACA743 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -95,6 +104,12 @@
 				CCA7508E1EDC9DC6000E6524 /* MPConfig.entitlements */,
 				CCA7508F1EDC9DC6000E6524 /* MPVPNManager.h */,
 				CCA750901EDC9DC6000E6524 /* MPVPNManager.m */,
+				A4E90BDD1EDEAE0D003B86D8 /* MPVPNConfig.h */,
+				A4E90BDE1EDEAE0D003B86D8 /* MPVPNConfig.m */,
+				A4E90BE01EDEAE30003B86D8 /* MPVPNIPSecConfig.h */,
+				A4E90BE11EDEAE30003B86D8 /* MPVPNIPSecConfig.m */,
+				A4E90BE31EDEAE56003B86D8 /* MPVPNIKEv2Config.h */,
+				A4E90BE41EDEAE56003B86D8 /* MPVPNIKEv2Config.m */,
 			);
 			path = MPVPNManagerClasses;
 			sourceTree = SOURCE_ROOT;
@@ -172,8 +187,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				CCA750921EDC9DC6000E6524 /* MPVPNManager.m in Sources */,
+				A4E90BE21EDEAE30003B86D8 /* MPVPNIPSecConfig.m in Sources */,
 				CC197D031EDC863600ACA743 /* ViewController.m in Sources */,
 				CC197D001EDC863600ACA743 /* AppDelegate.m in Sources */,
+				A4E90BDF1EDEAE0D003B86D8 /* MPVPNConfig.m in Sources */,
+				A4E90BE51EDEAE56003B86D8 /* MPVPNIKEv2Config.m in Sources */,
 				CCA750911EDC9DC6000E6524 /* AFNetworkReachabilityManager.m in Sources */,
 				CC197CFD1EDC863600ACA743 /* main.m in Sources */,
 			);

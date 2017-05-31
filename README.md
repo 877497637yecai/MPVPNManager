@@ -1,8 +1,8 @@
 # MPVPNManager
-iOS VPN 支持ipsec协议 三步启动 轻松畅玩
+iOS VPN 支持IPSec IKEv2 协议 三步启动 轻松畅玩
 
 ## Description 描述
-* 支持iOS8以上的vpn 暂时支持ipsec协议
+* 支持iOS8以上的vpn 暂时支持PSec IKEv2协议
 * 支持断线重连
 
 

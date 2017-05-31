@@ -31,6 +31,7 @@ typedef NS_ENUM(NSInteger, MMPVPNManagerType){
 /** config info */
 @property (nonatomic, readonly, strong) MPVPNConfig *config;
 @property (nonatomic, readonly, assign) MMPVPNManagerType vpnType;
+
 - (void)setConfig:(MPVPNConfig *)config with:(MMPVPNManagerType)vpnType;
 /** run status */
 @property (nonatomic, readonly, assign) enum NEVPNStatus status;

@@ -7,14 +7,13 @@ iOS VPN 支持ipsec协议 三步启动 轻松畅玩
 
 
 ## 更新日志 
+### 2017年05月31更新 
+* 增加IKEv2支持
+* 重写部分接口代码
 ### 2017年05月30更新 
 * 重写大部分源码增加可读性
 * 修复断线重连的bug
 
-
-## 联系方式 
-* Email:mopellet@foxmail.com
-* 欢迎大家与我一起学习进步
 
 ## Usage 使用方法
 * 1、将子文件夹MPVPNManagerClasses拖入到项目中。
@@ -55,7 +54,6 @@ iOS VPN 支持ipsec协议 三步启动 轻松畅玩
 
 
 ## 相关资料
-* [谈谈 iOS8 中的 Network Extension](http://blog.zorro.im/posts/iOS8-Network-Extension.html)
 * [Configure and manage VPN connections programmatically in iOS 8](http://ramezanpour.net/post/2014/08/03/configure-and-manage-vpn-connections-programmatically-in-ios-8/)
     
 

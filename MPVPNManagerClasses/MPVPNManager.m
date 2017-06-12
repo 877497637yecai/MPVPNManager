@@ -88,8 +88,8 @@ static NSString * const MPServiceName = @"com.mopellet.MPVPNManager.MPServiceNam
 
 - (void) createKeychainPassword:(NSString *)password privateKey:(NSString *)privateKey
 {
-    [self createKeychainValue:password forIdentifier:MPVPNPasswordIdentifier];
-    [self createKeychainValue:privateKey forIdentifier:MPVPNSharePrivateKeyIdentifier];
+//    [self createKeychainValue:password forIdentifier:MPVPNPasswordIdentifier];
+//    [self createKeychainValue:privateKey forIdentifier:MPVPNSharePrivateKeyIdentifier];
 }
 
 - (void) saveConfigCompleteHandle:(CompleteHandle)completeHandle;{
@@ -124,11 +124,14 @@ static NSString * const MPServiceName = @"com.mopellet.MPVPNManager.MPServiceNam
                     
                     p.username = privateIPSecConfig.username;
                     p.serverAddress = privateIPSecConfig.serverAddress;
+//                    p.passwordReference = [self searchKeychainCopyMatching:MPVPNPasswordIdentifier];
+                    p.passwordReference = privateIPSecConfig.passwordReference;
                     
-                    p.passwordReference = [self searchKeychainCopyMatching:MPVPNPasswordIdentifier];
-                    if ([self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier] && privateIPSecConfig.sharePrivateKey) {
+                    if (
+//                        [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier] &&
+                        privateIPSecConfig.sharePrivateKey) {
                         p.authenticationMethod = NEVPNIKEAuthenticationMethodSharedSecret;
-                        p.sharedSecretReference = [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier];
+//                        p.sharedSecretReference = [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier];
                     }
                     else if (privateIPSecConfig.identityData && privateIPSecConfig.password) {
                         p.authenticationMethod = NEVPNIKEAuthenticationMethodCertificate;
@@ -176,15 +179,21 @@ static NSString * const MPServiceName = @"com.mopellet.MPVPNManager.MPServiceNam
                     
                     NEVPNProtocolIKEv2 *p = [NEVPNProtocolIKEv2 new];
                     p.username = privateIKEv2Config.username;
-                    p.passwordReference = [self searchKeychainCopyMatching:MPVPNPasswordIdentifier];
+//                    p.passwordReference = [self searchKeychainCopyMatching:MPVPNPasswordIdentifier];
+                    p.passwordReference = privateIKEv2Config.passwordReference;
+                    NSString *result = [[NSString alloc] initWithData:p.passwordReference encoding:NSUTF8StringEncoding];
+                    NSLog(@"%@",result);
+                    
                     p.serverAddress = privateIKEv2Config.serverAddress;
 //                    p.serverCertificateIssuerCommonName = @"COMODO RSA Domain Validation Secure Server CA";
                     p.serverCertificateIssuerCommonName = privateIKEv2Config.serverCertificateCommonName;
                     p.serverCertificateCommonName = privateIKEv2Config.serverCertificateCommonName;
                     
-                    if ([self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier] && privateIKEv2Config.sharePrivateKey) {
+                    if (
+//                        [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier] &&
+                        privateIKEv2Config.sharePrivateKey) {
                         p.authenticationMethod = NEVPNIKEAuthenticationMethodSharedSecret;
-                        p.sharedSecretReference = [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier];
+//                        p.sharedSecretReference = [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier];
                     }
                     else if (privateIKEv2Config.identityData && privateIKEv2Config.password) {
                         p.authenticationMethod = NEVPNIKEAuthenticationMethodCertificate;
@@ -207,16 +216,17 @@ static NSString * const MPServiceName = @"com.mopellet.MPVPNManager.MPServiceNam
                     [_vpnManager setOnDemandEnabled:YES];
                     [_vpnManager setEnabled:YES];
                     
-                    NEEvaluateConnectionRule * ru = [[NEEvaluateConnectionRule alloc]
-                                                     initWithMatchDomains:@[@"google.com"]
-                                                     andAction:NEEvaluateConnectionRuleActionConnectIfNeeded];
+//                    NEEvaluateConnectionRule * ru = [[NEEvaluateConnectionRule alloc]
+//                                                     initWithMatchDomains:@[@"google.com"]
+//                                                     andAction:NEEvaluateConnectionRuleActionConnectIfNeeded];
+//                    
+//                    ru.probeURL = [[NSURL alloc] initWithString:@"http://www.google.com"];
+//                    
+//                    NEOnDemandRuleEvaluateConnection *ec =[[NEOnDemandRuleEvaluateConnection alloc] init];
+//                    //                ec.interfaceTypeMatch = NEOnDemandRuleInterfaceTypeWiFi;
+//                    [ec setConnectionRules:@[ru]];
+//                    [_vpnManager setOnDemandRules:@[ec]];
                     
-                    ru.probeURL = [[NSURL alloc] initWithString:@"http://www.google.com"];
-                    
-                    NEOnDemandRuleEvaluateConnection *ec =[[NEOnDemandRuleEvaluateConnection alloc] init];
-                    //                ec.interfaceTypeMatch = NEOnDemandRuleInterfaceTypeWiFi;
-                    [ec setConnectionRules:@[ru]];
-                    [_vpnManager setOnDemandRules:@[ec]];
                     [_vpnManager setLocalizedDescription:privateIKEv2Config.configTitle];
                     [_vpnManager saveToPreferencesWithCompletionHandler:^(NSError *error) {
                         if(error) {
@@ -305,49 +315,49 @@ static NSString * const MPServiceName = @"com.mopellet.MPVPNManager.MPServiceNam
 
 #pragma mark -
 #pragma mark - KeyChain BEGIN
-
-
-
-- (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
-    NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
-    
-    [searchDictionary setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
-    
-    NSData *encodedIdentifier = [identifier dataUsingEncoding:NSUTF8StringEncoding];
-    [searchDictionary setObject:encodedIdentifier forKey:(__bridge id)kSecAttrGeneric];
-    [searchDictionary setObject:encodedIdentifier forKey:(__bridge id)kSecAttrAccount];
-    [searchDictionary setObject:MPServiceName forKey:(__bridge id)kSecAttrService];
-    
-    return searchDictionary;
-}
-
-- (NSData *)searchKeychainCopyMatching:(NSString *)identifier {
-    NSMutableDictionary *searchDictionary = [self newSearchDictionary:identifier];
-    
-    [searchDictionary setObject:(__bridge id)kSecMatchLimitOne forKey:(__bridge id)kSecMatchLimit];
-    [searchDictionary setObject:@YES forKey:(__bridge id)kSecReturnPersistentRef];
-    
-    CFTypeRef result = NULL;
-    SecItemCopyMatching((__bridge CFDictionaryRef)searchDictionary, &result);
-    
-    return (__bridge_transfer NSData *)result;
-}
-
-- (BOOL)createKeychainValue:(NSString *)password forIdentifier:(NSString *)identifier {
-    NSMutableDictionary *dictionary = [self newSearchDictionary:identifier];
-    
-    OSStatus status = SecItemDelete((__bridge CFDictionaryRef)dictionary);
-    
-    NSData *passwordData = [password dataUsingEncoding:NSUTF8StringEncoding];
-    [dictionary setObject:passwordData forKey:(__bridge id)kSecValueData];
-    
-    status = SecItemAdd((__bridge CFDictionaryRef)dictionary, NULL);
-    
-    if (status == errSecSuccess) {
-        return YES;
-    }
-    return NO;
-}
-#pragma mark - KeyChain END
+//
+//
+//
+//- (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
+//    NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
+//    
+//    [searchDictionary setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
+//    
+//    NSData *encodedIdentifier = [identifier dataUsingEncoding:NSUTF8StringEncoding];
+//    [searchDictionary setObject:encodedIdentifier forKey:(__bridge id)kSecAttrGeneric];
+//    [searchDictionary setObject:encodedIdentifier forKey:(__bridge id)kSecAttrAccount];
+//    [searchDictionary setObject:MPServiceName forKey:(__bridge id)kSecAttrService];
+//    
+//    return searchDictionary;
+//}
+//
+//- (NSData *)searchKeychainCopyMatching:(NSString *)identifier {
+//    NSMutableDictionary *searchDictionary = [self newSearchDictionary:identifier];
+//    
+//    [searchDictionary setObject:(__bridge id)kSecMatchLimitOne forKey:(__bridge id)kSecMatchLimit];
+//    [searchDictionary setObject:@YES forKey:(__bridge id)kSecReturnPersistentRef];
+//    
+//    CFTypeRef result = NULL;
+//    SecItemCopyMatching((__bridge CFDictionaryRef)searchDictionary, &result);
+//    
+//    return (__bridge_transfer NSData *)result;
+//}
+//
+//- (BOOL)createKeychainValue:(NSString *)password forIdentifier:(NSString *)identifier {
+//    NSMutableDictionary *dictionary = [self newSearchDictionary:identifier];
+//    
+//    OSStatus status = SecItemDelete((__bridge CFDictionaryRef)dictionary);
+//    
+//    NSData *passwordData = [password dataUsingEncoding:NSUTF8StringEncoding];
+//    [dictionary setObject:passwordData forKey:(__bridge id)kSecValueData];
+//    
+//    status = SecItemAdd((__bridge CFDictionaryRef)dictionary, NULL);
+//    
+//    if (status == errSecSuccess) {
+//        return YES;
+//    }
+//    return NO;
+//}
+//#pragma mark - KeyChain END
 
 @end

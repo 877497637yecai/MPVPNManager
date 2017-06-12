@@ -26,21 +26,49 @@
     // 您的star就是对我开发最大的动力
     
     //初始化配置信息
-    MPVPNIPSecConfig *config = [MPVPNIPSecConfig new];
-    config.configTitle = @"MPVPNManager";
-    config.serverAddress = @"108.61.180.50";
-    config.username = @"chenziqiang01";
-    config.password = @"18607114709";
-    config.sharePrivateKey = @"tksw123";
+//    MPVPNIPSecConfig *config = [MPVPNIPSecConfig new];
+//    config.configTitle = @"MPVPNManager";
+//    config.serverAddress = @"108.61.180.50";
+//    config.username = @"chenziqiang01";
+//    config.password = @"18607114709";
+//    config.sharePrivateKey = @"tksw123";
+//    
+//    _mpVpnManager = [MPVPNManager shareInstance];
+//    [_mpVpnManager setConfig:config with:MMPVPNManagerTypeIPSec];
+//    [_mpVpnManager saveConfigCompleteHandle:^(BOOL success, NSString *returnInfo) {
+//        NSLog(@"returnInfo:%@",returnInfo);
+//        if (success) {
+//            [self start:nil];
+//        }
+//    }];
+//
     
+    MPVPNIKEv2Config *config = [MPVPNIKEv2Config new];
+    config.configTitle = @"MPVPNManager";
+    config.serverAddress = @"64.62.228.225";
+    config.username = @"roland";
+    config.password = @"roland";
+    config.remoteIdentifier = @"cafre.funkernel.com";
+    config.serverCertificateCommonName = @"StrongSwan Root CA";
+    config.serverCertificateIssuerCommonName = @"StrongSwan Root CA";
+    
+//    NSString* path = [[NSBundle mainBundle] pathForResource:@"CACert"
+//                                                     ofType:@"pem"];
+    
+    NSString* path = [[NSBundle mainBundle] pathForResource:@"StrongSwan Root CA"
+                                                     ofType:@"cer"];
+    
+    config.identityData = [NSData dataWithContentsOfFile:path];
+//    config.identityDataPassword = @"100861";
     _mpVpnManager = [MPVPNManager shareInstance];
-    [_mpVpnManager setConfig:config with:MMPVPNManagerTypeIPSec];
+    [_mpVpnManager setConfig:config with:MMPVPNManagerTypeIKEv2];
     [_mpVpnManager saveConfigCompleteHandle:^(BOOL success, NSString *returnInfo) {
         NSLog(@"returnInfo:%@",returnInfo);
         if (success) {
             [self start:nil];
         }
     }];
+    
     // 如果提示vpn服务器并未响应是配置账号的问题 请使用正确的账号设置MPVPNConfig即可
     
     //    // ios 9 参考

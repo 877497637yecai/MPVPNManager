@@ -13,6 +13,7 @@
 @property (nonatomic, copy) NSString *serverAddress;
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *password;
+@property (nonatomic, strong, readonly) NSData *passwordReference;
 /** vpn验证证书 p12文件  PKCS12 格式 当前属性与sharePrivateKey 仅有一个有效默认为sharePrivateKey优先*/
 @property (nonatomic, copy) NSData *identityData;
 /** 证书秘钥 */

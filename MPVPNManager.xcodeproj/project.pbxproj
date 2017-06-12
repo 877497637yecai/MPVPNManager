@@ -16,6 +16,8 @@
 		CC197D061EDC863600ACA743 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC197D041EDC863600ACA743 /* Main.storyboard */; };
 		CC197D081EDC863600ACA743 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC197D071EDC863600ACA743 /* Assets.xcassets */; };
 		CC197D0B1EDC863600ACA743 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC197D091EDC863600ACA743 /* LaunchScreen.storyboard */; };
+		CC37ABCC1EEED55A0014D13B /* CACert.pem in Resources */ = {isa = PBXBuildFile; fileRef = CC37ABCB1EEED55A0014D13B /* CACert.pem */; };
+		CC37ABCE1EEEE4270014D13B /* StrongSwan Root CA.cer in Resources */ = {isa = PBXBuildFile; fileRef = CC37ABCD1EEEE4270014D13B /* StrongSwan Root CA.cer */; };
 		CCA750911EDC9DC6000E6524 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA7508D1EDC9DC6000E6524 /* AFNetworkReachabilityManager.m */; };
 		CCA750921EDC9DC6000E6524 /* MPVPNManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA750901EDC9DC6000E6524 /* MPVPNManager.m */; };
 /* End PBXBuildFile section */
@@ -37,6 +39,8 @@
 		CC197D071EDC863600ACA743 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CC197D0A1EDC863600ACA743 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CC197D0C1EDC863600ACA743 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC37ABCB1EEED55A0014D13B /* CACert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CACert.pem; sourceTree = "<group>"; };
+		CC37ABCD1EEEE4270014D13B /* StrongSwan Root CA.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "StrongSwan Root CA.cer"; sourceTree = "<group>"; };
 		CCA7508C1EDC9DC6000E6524 /* AFNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkReachabilityManager.h; sourceTree = "<group>"; };
 		CCA7508D1EDC9DC6000E6524 /* AFNetworkReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkReachabilityManager.m; sourceTree = "<group>"; };
 		CCA7508E1EDC9DC6000E6524 /* MPConfig.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = MPConfig.entitlements; sourceTree = "<group>"; };
@@ -99,6 +103,8 @@
 		CCA7508B1EDC9DC6000E6524 /* MPVPNManagerClasses */ = {
 			isa = PBXGroup;
 			children = (
+				CC37ABCD1EEEE4270014D13B /* StrongSwan Root CA.cer */,
+				CC37ABCB1EEED55A0014D13B /* CACert.pem */,
 				CCA7508C1EDC9DC6000E6524 /* AFNetworkReachabilityManager.h */,
 				CCA7508D1EDC9DC6000E6524 /* AFNetworkReachabilityManager.m */,
 				CCA7508E1EDC9DC6000E6524 /* MPConfig.entitlements */,
@@ -173,9 +179,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC37ABCC1EEED55A0014D13B /* CACert.pem in Resources */,
 				CC197D0B1EDC863600ACA743 /* LaunchScreen.storyboard in Resources */,
 				CC197D081EDC863600ACA743 /* Assets.xcassets in Resources */,
 				CC197D061EDC863600ACA743 /* Main.storyboard in Resources */,
+				CC37ABCE1EEEE4270014D13B /* StrongSwan Root CA.cer in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

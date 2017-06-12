@@ -10,4 +10,10 @@
 
 @implementation MPVPNConfig
 
+- (void)setPassword:(NSString *)password {
+
+    _password = password;
+    
+    _passwordReference = [password dataUsingEncoding:NSUTF8StringEncoding];
+}
 @end

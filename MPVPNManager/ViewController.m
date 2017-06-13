@@ -10,7 +10,7 @@
 
 #import "MPVPNManager.h"
 
-
+#import <SAMKeychain/SAMKeychain.h>
 @interface ViewController()
 @property (nonatomic, strong) MPVPNManager * mpVpnManager;
 @property (weak, nonatomic) IBOutlet UILabel *describe;
@@ -55,11 +55,11 @@
 //    NSString* path = [[NSBundle mainBundle] pathForResource:@"CACert"
 //                                                     ofType:@"pem"];
     
-    NSString* path = [[NSBundle mainBundle] pathForResource:@"StrongSwan Root CA"
-                                                     ofType:@"cer"];
+    NSString* path = [[NSBundle mainBundle] pathForResource:@"test"
+                                                     ofType:@"p12"];
     
     config.identityData = [NSData dataWithContentsOfFile:path];
-//    config.identityDataPassword = @"100861";
+    config.identityDataPassword = @"test";
     _mpVpnManager = [MPVPNManager shareInstance];
     [_mpVpnManager setConfig:config with:MMPVPNManagerTypeIKEv2];
     [_mpVpnManager saveConfigCompleteHandle:^(BOOL success, NSString *returnInfo) {
@@ -97,7 +97,6 @@
     
     // 监听状态
     [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(updateTitle) userInfo:self repeats:YES];
-  
 }
 
 - (IBAction)start:(id)sender {

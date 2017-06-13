@@ -1,13 +1,11 @@
 
 #import "MPVPNManager.h"
-#import "AFNetworkReachabilityManager.h"
+#import <AFNetworking/AFNetworkReachabilityManager.h>
+#import <SAMKeychain/SAMKeychain.h>
 #import "MPVPNIKEv2Config.h"
 #pragma mark - 定义一些所需参数 可以替换成自己的 可以上淘宝买一个记得 只支持ipsec
-static NSString * const MPVPNPasswordIdentifier = @"MPVPNPwdIdentifier"; // 可以自定义
-static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNPrivateKeyIdentifier"; // 可以自定义
-static NSString * const MPServiceName = @"com.mopellet.MPVPNManager.MPServiceName"; // 可以自定义
-//static NSString * const MPLocalIdentifier = @"MPLocalIdentifier.client"; // 可以自定义
-//static NSString * const MPRemoteIdentifier = @"MPRemoteIdentifier.server"; // 可以自定义
+static NSString * const MPVPNPasswordIdentifier = @"MPVPNPasswordIdentifier"; // 可以自定义
+static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyIdentifier"; // 可以自定义
 
 @interface MPVPNManager ()
 
@@ -88,8 +86,8 @@ static NSString * const MPServiceName = @"com.mopellet.MPVPNManager.MPServiceNam
 
 - (void) createKeychainPassword:(NSString *)password privateKey:(NSString *)privateKey
 {
-//    [self createKeychainValue:password forIdentifier:MPVPNPasswordIdentifier];
-//    [self createKeychainValue:privateKey forIdentifier:MPVPNSharePrivateKeyIdentifier];
+    [self createKeychainValue:password forIdentifier:MPVPNPasswordIdentifier];
+    [self createKeychainValue:privateKey forIdentifier:MPVPNSharePrivateKeyIdentifier];
 }
 
 - (void) saveConfigCompleteHandle:(CompleteHandle)completeHandle;{
@@ -124,14 +122,14 @@ static NSString * const MPServiceName = @"com.mopellet.MPVPNManager.MPServiceNam
                     
                     p.username = privateIPSecConfig.username;
                     p.serverAddress = privateIPSecConfig.serverAddress;
-//                    p.passwordReference = [self searchKeychainCopyMatching:MPVPNPasswordIdentifier];
-                    p.passwordReference = privateIPSecConfig.passwordReference;
+                    p.passwordReference = [self searchKeychainCopyMatching:MPVPNPasswordIdentifier];
+//                    p.passwordReference = privateIPSecConfig.passwordReference;
                     
                     if (
-//                        [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier] &&
+                        [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier] &&
                         privateIPSecConfig.sharePrivateKey) {
                         p.authenticationMethod = NEVPNIKEAuthenticationMethodSharedSecret;
-//                        p.sharedSecretReference = [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier];
+                        p.sharedSecretReference = [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier];
                     }
                     else if (privateIPSecConfig.identityData && privateIPSecConfig.password) {
                         p.authenticationMethod = NEVPNIKEAuthenticationMethodCertificate;
@@ -179,21 +177,20 @@ static NSString * const MPServiceName = @"com.mopellet.MPVPNManager.MPServiceNam
                     
                     NEVPNProtocolIKEv2 *p = [NEVPNProtocolIKEv2 new];
                     p.username = privateIKEv2Config.username;
-//                    p.passwordReference = [self searchKeychainCopyMatching:MPVPNPasswordIdentifier];
-                    p.passwordReference = privateIKEv2Config.passwordReference;
-                    NSString *result = [[NSString alloc] initWithData:p.passwordReference encoding:NSUTF8StringEncoding];
-                    NSLog(@"%@",result);
+                    p.passwordReference = [self searchKeychainCopyMatching:MPVPNPasswordIdentifier];
+//                    p.passwordReference = privateIKEv2Config.passwordReference;
+//                    NSString *result = [[NSString alloc] initWithData:p.passwordReference encoding:NSUTF8StringEncoding];
+//                    NSLog(@"%@",result);
                     
                     p.serverAddress = privateIKEv2Config.serverAddress;
-//                    p.serverCertificateIssuerCommonName = @"COMODO RSA Domain Validation Secure Server CA";
                     p.serverCertificateIssuerCommonName = privateIKEv2Config.serverCertificateCommonName;
                     p.serverCertificateCommonName = privateIKEv2Config.serverCertificateCommonName;
                     
                     if (
-//                        [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier] &&
+                        [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier] &&
                         privateIKEv2Config.sharePrivateKey) {
                         p.authenticationMethod = NEVPNIKEAuthenticationMethodSharedSecret;
-//                        p.sharedSecretReference = [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier];
+                        p.sharedSecretReference = [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier];
                     }
                     else if (privateIKEv2Config.identityData && privateIKEv2Config.password) {
                         p.authenticationMethod = NEVPNIKEAuthenticationMethodCertificate;
@@ -315,6 +312,37 @@ static NSString * const MPServiceName = @"com.mopellet.MPVPNManager.MPServiceNam
 
 #pragma mark -
 #pragma mark - KeyChain BEGIN
+
+
+// [self createKeychainValue:password forIdentifier:MPVPNPasswordIdentifier];
+
+- (BOOL)createKeychainValue:(NSString *)password forIdentifier:(NSString *)identifier {
+    if (!password.length) {
+        return NO;
+    }
+    NSError *error = nil;
+    [SAMKeychain setPassword:password forService:[self getServiceName] account:identifier error:&error];
+    if ([error code] == errSecSuccess) {
+        NSLog(@"save success :%@",password);
+        return YES;
+    }
+    return NO;
+}
+
+- (NSData *)searchKeychainCopyMatching:(NSString *)identifier {
+    NSError *error = nil;
+    NSString *result = [SAMKeychain passwordForService:[self getServiceName] account:identifier error:&error];
+    NSLog(@"%s %@  %@",__func__,identifier, result);
+    if ([error code] == errSecItemNotFound) {
+        return nil;
+    }
+    return [result dataUsingEncoding:NSUTF8StringEncoding];
+}
+
+- (NSString *)getServiceName {
+    return [[NSBundle mainBundle] bundleIdentifier];
+}
+
 //
 //
 //

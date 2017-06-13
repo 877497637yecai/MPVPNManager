@@ -178,9 +178,6 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
                     NEVPNProtocolIKEv2 *p = [NEVPNProtocolIKEv2 new];
                     p.username = privateIKEv2Config.username;
                     p.passwordReference = [self searchKeychainCopyMatching:MPVPNPasswordIdentifier];
-//                    p.passwordReference = privateIKEv2Config.passwordReference;
-//                    NSString *result = [[NSString alloc] initWithData:p.passwordReference encoding:NSUTF8StringEncoding];
-//                    NSLog(@"%@",result);
                     
                     p.serverAddress = privateIKEv2Config.serverAddress;
                     p.serverCertificateIssuerCommonName = privateIKEv2Config.serverCertificateCommonName;

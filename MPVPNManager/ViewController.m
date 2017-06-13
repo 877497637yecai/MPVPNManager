@@ -50,10 +50,10 @@
     /**直接用AirDrop将CACert.pem发送到手机即可*/
     MPVPNIKEv2Config *config = [MPVPNIKEv2Config new];
     config.configTitle = @"MPVPNManager";
-    config.serverAddress = @"64.62.228.225";
-    config.username = @"roland";
-    config.password = @"roland";
-    config.remoteIdentifier = @"cafre.funkernel.com";
+    config.serverAddress = @"XX.XX.XXX.XXX";
+    config.username = @"XXX";
+    config.password = @"XXX";
+    config.remoteIdentifier = @"XXX.XXX.com";
     config.serverCertificateCommonName = @"StrongSwan Root CA";
     config.serverCertificateIssuerCommonName = @"StrongSwan Root CA";
     _mpVpnManager = [MPVPNManager shareInstance];

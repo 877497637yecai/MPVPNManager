@@ -26,7 +26,7 @@
     // 您的star就是对我开发最大的动力
     
     //初始化配置信息
-    /**共享秘钥方式*/
+//    /**共享秘钥方式*/
 //    MPVPNIPSecConfig *config = [MPVPNIPSecConfig new];
 //    config.configTitle = @"MPVPNManager";
 //    config.serverAddress = @"108.61.180.50";

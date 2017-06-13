@@ -31,28 +31,49 @@ iOS VPN 支持IPSec IKEv2 协议 三步启动 轻松畅玩
     #import "MPVPNManager.h"
 ```
 
-* 5、初始化配置信息并启动
+* 5、IPSec协议，共享秘钥方式
 
 ```objc
-	//初始化配置
-    MPVPNConfig *config = [MPVPNConfig new];
-    config.configTitle = @"MPVPNManager"; // 显示在系统设置VPN的标题
-    config.serverAddress = @"108.61.180.50"; // VPN地址
+    /**共享秘钥方式*/
+    MPVPNIPSecConfig *config = [MPVPNIPSecConfig new];
+    config.configTitle = @"MPVPNManager";
+    config.serverAddress = @"108.61.180.50";
     config.username = @"chenziqiang01";
     config.password = @"18607114709";
-    config.privateKey = @"tksw123";
+    config.sharePrivateKey = @"tksw123";
     
-    MPVPNManager *mpVpnManager = [MPVPNManager shareInstance];
-    // 添加配置信息
-    mpVpnManager.config = config;
-    // 保存配置信息
-    [mpVpnManager saveConfigCompleteHandle:^(BOOL success, NSString *returnInfo) {
+    _mpVpnManager = [MPVPNManager shareInstance];
+    [_mpVpnManager setConfig:config with:MMPVPNManagerTypeIPSec];
+    [_mpVpnManager saveConfigCompleteHandle:^(BOOL success, NSString *returnInfo) {
+        NSLog(@"returnInfo:%@",returnInfo);
         if (success) {
-        		//开始运行
-             [mpVpnManager start];
+            [self start:nil];
         }
     }];
-    
+```
+
+* 6、IKEv2协议
+
+```objc
+    /**以下方式需要安装pem描述文件*/
+    /**不需要验证信息方式*/
+    /**直接用AirDrop将CACert.pem发送到手机即可*/
+    MPVPNIKEv2Config *config = [MPVPNIKEv2Config new];
+    config.configTitle = @"MPVPNManager";
+    config.serverAddress = @"XX.XX.XXX.XXX";
+    config.username = @"XXX";
+    config.password = @"XXX";
+    config.remoteIdentifier = @"XXX.XXX.com";
+    config.serverCertificateCommonName = @"StrongSwan Root CA";
+    config.serverCertificateIssuerCommonName = @"StrongSwan Root CA";
+    _mpVpnManager = [MPVPNManager shareInstance];
+    [_mpVpnManager setConfig:config with:MMPVPNManagerTypeIKEv2];
+    [_mpVpnManager saveConfigCompleteHandle:^(BOOL success, NSString *returnInfo) {
+        NSLog(@"returnInfo:%@",returnInfo);
+        if (success) {
+            [self start:nil];
+        }
+    }];
 ```
 
 ## 注意

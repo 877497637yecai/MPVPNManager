@@ -1,7 +1,6 @@
 
 #import "MPVPNManager.h"
 #import <AFNetworking/AFNetworkReachabilityManager.h>
-#import <SAMKeychain/SAMKeychain.h>
 #import "MPVPNIKEv2Config.h"
 #pragma mark - 定义一些所需参数 可以替换成自己的 可以上淘宝买一个记得 只支持ipsec
 static NSString * const MPVPNPasswordIdentifier = @"MPVPNPasswordIdentifier"; // 可以自定义
@@ -86,8 +85,14 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
 
 - (void) createKeychainPassword:(NSString *)password privateKey:(NSString *)privateKey
 {
-    [self createKeychainValue:password forIdentifier:MPVPNPasswordIdentifier];
-    [self createKeychainValue:privateKey forIdentifier:MPVPNSharePrivateKeyIdentifier];
+    if (password.length) {
+         [self createKeychainValue:password forIdentifier:MPVPNPasswordIdentifier];
+    }
+   
+    if (privateKey.length) {
+        [self createKeychainValue:privateKey forIdentifier:MPVPNSharePrivateKeyIdentifier];
+    }
+   
 }
 
 - (void) saveConfigCompleteHandle:(CompleteHandle)completeHandle;{
@@ -307,82 +312,51 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
     [self outPutConnectionStatus];
 }
 
-#pragma mark -
 #pragma mark - KeyChain BEGIN
-
-
-// [self createKeychainValue:password forIdentifier:MPVPNPasswordIdentifier];
-
-- (BOOL)createKeychainValue:(NSString *)password forIdentifier:(NSString *)identifier {
-    if (!password.length) {
-        return NO;
-    }
-    NSError *error = nil;
-    [SAMKeychain setPassword:password forService:[self getServiceName] account:identifier error:&error];
-    if ([error code] == errSecSuccess) {
-        NSLog(@"save success :%@",password);
-        return YES;
-    }
-    return NO;
-}
-
-- (NSData *)searchKeychainCopyMatching:(NSString *)identifier {
-    NSError *error = nil;
-    NSString *result = [SAMKeychain passwordForService:[self getServiceName] account:identifier error:&error];
-    NSLog(@"%s %@  %@",__func__,identifier, result);
-    if ([error code] == errSecItemNotFound) {
-        return nil;
-    }
-    return [result dataUsingEncoding:NSUTF8StringEncoding];
-}
-
 - (NSString *)getServiceName {
     return [[NSBundle mainBundle] bundleIdentifier];
 }
 
-//
-//
-//
-//- (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
-//    NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
-//    
-//    [searchDictionary setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
-//    
-//    NSData *encodedIdentifier = [identifier dataUsingEncoding:NSUTF8StringEncoding];
-//    [searchDictionary setObject:encodedIdentifier forKey:(__bridge id)kSecAttrGeneric];
-//    [searchDictionary setObject:encodedIdentifier forKey:(__bridge id)kSecAttrAccount];
-//    [searchDictionary setObject:MPServiceName forKey:(__bridge id)kSecAttrService];
-//    
-//    return searchDictionary;
-//}
-//
-//- (NSData *)searchKeychainCopyMatching:(NSString *)identifier {
-//    NSMutableDictionary *searchDictionary = [self newSearchDictionary:identifier];
-//    
-//    [searchDictionary setObject:(__bridge id)kSecMatchLimitOne forKey:(__bridge id)kSecMatchLimit];
-//    [searchDictionary setObject:@YES forKey:(__bridge id)kSecReturnPersistentRef];
-//    
-//    CFTypeRef result = NULL;
-//    SecItemCopyMatching((__bridge CFDictionaryRef)searchDictionary, &result);
-//    
-//    return (__bridge_transfer NSData *)result;
-//}
-//
-//- (BOOL)createKeychainValue:(NSString *)password forIdentifier:(NSString *)identifier {
-//    NSMutableDictionary *dictionary = [self newSearchDictionary:identifier];
-//    
-//    OSStatus status = SecItemDelete((__bridge CFDictionaryRef)dictionary);
-//    
-//    NSData *passwordData = [password dataUsingEncoding:NSUTF8StringEncoding];
-//    [dictionary setObject:passwordData forKey:(__bridge id)kSecValueData];
-//    
-//    status = SecItemAdd((__bridge CFDictionaryRef)dictionary, NULL);
-//    
-//    if (status == errSecSuccess) {
-//        return YES;
-//    }
-//    return NO;
-//}
-//#pragma mark - KeyChain END
+- (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
+    NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
+    
+    [searchDictionary setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
+    
+    NSData *encodedIdentifier = [identifier dataUsingEncoding:NSUTF8StringEncoding];
+    [searchDictionary setObject:encodedIdentifier forKey:(__bridge id)kSecAttrGeneric];
+    [searchDictionary setObject:encodedIdentifier forKey:(__bridge id)kSecAttrAccount];
+    [searchDictionary setObject:[self getServiceName] forKey:(__bridge id)kSecAttrService];
+    
+    return searchDictionary;
+}
+
+- (NSData *)searchKeychainCopyMatching:(NSString *)identifier {
+    NSMutableDictionary *searchDictionary = [self newSearchDictionary:identifier];
+    
+    [searchDictionary setObject:(__bridge id)kSecMatchLimitOne forKey:(__bridge id)kSecMatchLimit];
+    [searchDictionary setObject:@YES forKey:(__bridge id)kSecReturnPersistentRef];
+    
+    CFTypeRef result = NULL;
+    SecItemCopyMatching((__bridge CFDictionaryRef)searchDictionary, &result);
+    
+    return (__bridge_transfer NSData *)result;
+}
+
+- (BOOL)createKeychainValue:(NSString *)password forIdentifier:(NSString *)identifier {
+    NSMutableDictionary *dictionary = [self newSearchDictionary:identifier];
+    
+    OSStatus status = SecItemDelete((__bridge CFDictionaryRef)dictionary);
+    
+    NSData *passwordData = [password dataUsingEncoding:NSUTF8StringEncoding];
+    [dictionary setObject:passwordData forKey:(__bridge id)kSecValueData];
+    
+    status = SecItemAdd((__bridge CFDictionaryRef)dictionary, NULL);
+    
+    if (status == errSecSuccess) {
+        return YES;
+    }
+    return NO;
+}
+#pragma mark - KeyChain END
 
 @end

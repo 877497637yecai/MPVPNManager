@@ -14,16 +14,13 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - SAMKeychain (1.5.2)
 
 DEPENDENCIES:
   - AFNetworking
-  - SAMKeychain
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  SAMKeychain: 1865333198217411f35327e8da61b43de79b635b
 
-PODFILE CHECKSUM: 2fa6323e3328664f3d0ac47cb6a2a735ee2040a9
+PODFILE CHECKSUM: f4ec721633ca2c9070537cd4380c5db1555cba61
 
 COCOAPODS: 1.2.0.beta.3

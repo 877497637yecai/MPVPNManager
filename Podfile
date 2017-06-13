@@ -2,10 +2,5 @@
 # platform :ios, '9.0'
 
 target 'MPVPNManager' do
-  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
-  # use_frameworks!
-
-  # Pods for MPVPNManager
-	pod 'SAMKeychain'
     pod 'AFNetworking'
 end

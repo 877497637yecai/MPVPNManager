@@ -9,8 +9,6 @@
 #import "ViewController.h"
 
 #import "MPVPNManager.h"
-
-#import <SAMKeychain/SAMKeychain.h>
 @interface ViewController()
 @property (nonatomic, strong) MPVPNManager * mpVpnManager;
 @property (weak, nonatomic) IBOutlet UILabel *describe;
@@ -50,10 +48,10 @@
     /**直接用AirDrop将CACert.pem发送到手机即可*/
     MPVPNIKEv2Config *config = [MPVPNIKEv2Config new];
     config.configTitle = @"MPVPNManager";
-    config.serverAddress = @"XX.XX.XXX.XXX";
-    config.username = @"XXX";
-    config.password = @"XXX";
-    config.remoteIdentifier = @"XXX.XXX.com";
+    config.serverAddress = @"64.62.228.225";
+    config.username = @"roland";
+    config.password = @"roland";
+    config.remoteIdentifier = @"cafre.funkernel.com";
     config.serverCertificateCommonName = @"StrongSwan Root CA";
     config.serverCertificateIssuerCommonName = @"StrongSwan Root CA";
     _mpVpnManager = [MPVPNManager shareInstance];
@@ -61,10 +59,10 @@
     [_mpVpnManager saveConfigCompleteHandle:^(BOOL success, NSString *returnInfo) {
         NSLog(@"returnInfo:%@",returnInfo);
         if (success) {
-            [self start:nil];
+//            [self start:nil];
         }
     }];
-    
+//
     // 如果提示vpn服务器并未响应是配置账号的问题 请使用正确的账号设置MPVPNConfig即可
     
     //    // ios 9 参考
@@ -92,7 +90,11 @@
     //    }
     
     // 监听状态
-    [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(updateTitle) userInfo:self repeats:YES];
+//    [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(updateTitle) userInfo:self repeats:YES];
+//    [SAMKeychain deletePasswordForService:@"com.mopellet.MPVPNManager" account:@"dongAccount_1"];
+//    [SAMKeychain deletePasswordForService:@"com.mopellet.MPVPNManager" account:[[[SAMKeychain accountsForService:@"com.mopellet.MPVPNManager"] firstObject] objectForKey:@"acct"]];
+//  NSLog(@"%@",[SAMKeychain accountsForService:@"com.mopellet.MPVPNManager"]);
+    
 }
 
 - (IBAction)start:(id)sender {

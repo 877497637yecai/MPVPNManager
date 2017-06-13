@@ -41,5 +41,7 @@ typedef NS_ENUM(NSInteger, MMPVPNManagerType){
 - (void)start;
 - (void)stop;
 
+- (void)mp_NEVPNStatusChanged:(StatusChanged)statusChanged;
+
 @end
 

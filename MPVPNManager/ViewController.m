@@ -62,6 +62,11 @@
 //            [self start:nil];
         }
     }];
+    
+    /**VPN连接状态的改变**/
+    [_mpVpnManager mp_NEVPNStatusChanged:^(enum NEVPNStatus status) {
+        [self updateTitle];
+    }];
 //
     // 如果提示vpn服务器并未响应是配置账号的问题 请使用正确的账号设置MPVPNConfig即可
     
@@ -88,13 +93,7 @@
     //            NSLog(@"%ld",(long)manager.connection.status);
     //        });
     //    }
-    
-    // 监听状态
-//    [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(updateTitle) userInfo:self repeats:YES];
-//    [SAMKeychain deletePasswordForService:@"com.mopellet.MPVPNManager" account:@"dongAccount_1"];
-//    [SAMKeychain deletePasswordForService:@"com.mopellet.MPVPNManager" account:[[[SAMKeychain accountsForService:@"com.mopellet.MPVPNManager"] firstObject] objectForKey:@"acct"]];
-//  NSLog(@"%@",[SAMKeychain accountsForService:@"com.mopellet.MPVPNManager"]);
-    
+
 }
 
 - (IBAction)start:(id)sender {

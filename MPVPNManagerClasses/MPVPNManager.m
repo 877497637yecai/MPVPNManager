@@ -11,6 +11,8 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
 @property (nonatomic, strong) NEVPNManager * vpnManager;
 @property (nonatomic, copy) void (^block)(enum NEVPNStatus status) ;
 
+@property (nonatomic, weak) NSTimer *checkStatusTimer;
+@property (nonatomic, assign) NEVPNStatus activeStatus;
 @end
 
 @implementation MPVPNManager
@@ -34,6 +36,8 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
         _vpnManager = [NEVPNManager sharedManager];
         _vpnType = MMPVPNManagerTypeNone;
         [self performSelector:@selector(registerNetWorkReachability) withObject:nil afterDelay:0.35f];
+        _activeStatus = NEVPNStatusInvalid;
+        _checkStatusTimer = [NSTimer scheduledTimerWithTimeInterval:0.2f target:self selector:@selector(timerWork:) userInfo:self repeats:YES];
     }
     return self;
 }
@@ -233,6 +237,12 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
                         }
                         else {
                             completeHandle(YES,@"Save config success");
+                            [_vpnManager loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
+                                if (error) {
+                                    completeHandle(NO,[NSString stringWithFormat:@"Load config failed [%@]", error.localizedDescription]);
+                                    return;
+                                }
+                            }];
                         }
                     }];
                     
@@ -270,6 +280,15 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
     }];
 }
 #pragma mark - 自动重连 END
+
+- (void)timerWork:(NSTimer *)timer {
+    if (_vpnManager.connection.status != _activeStatus) {
+        _activeStatus = _vpnManager.connection.status;
+        if (self.block) {
+            self.block(_activeStatus);
+        }
+    }
+}
 
 
 - (void)start{
@@ -310,6 +329,12 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
     [_vpnManager.connection stopVPNTunnel];
     NSLog(@"VPN has stopped success");
     [self outPutConnectionStatus];
+}
+
+
+- (void)mp_NEVPNStatusChanged:(StatusChanged)statusChanged
+{
+    self.block = statusChanged;
 }
 
 #pragma mark - KeyChain BEGIN

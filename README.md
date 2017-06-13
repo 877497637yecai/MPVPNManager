@@ -4,7 +4,7 @@ iOS VPN 支持IPSec IKEv2 协议 三步启动 轻松畅玩
 ## Description 描述
 * 支持iOS8以上的vpn 暂时支持PSec IKEv2协议
 * 支持断线重连
-
+* 此项目不定期更新，有问题发Issues，我会尽力解决，然后Watch该项目，最后star一下，多谢各位老铁们。
 
 ## 更新日志 
 ### 2017年06月13更新 

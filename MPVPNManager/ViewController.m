@@ -26,6 +26,7 @@
     // 您的star就是对我开发最大的动力
     
     //初始化配置信息
+    /**共享秘钥方式*/
 //    MPVPNIPSecConfig *config = [MPVPNIPSecConfig new];
 //    config.configTitle = @"MPVPNManager";
 //    config.serverAddress = @"108.61.180.50";
@@ -43,6 +44,10 @@
 //    }];
 //
     
+    
+    /**以下方式需要安装pem描述文件*/
+    /**不需要验证信息方式*/
+    /**直接用AirDrop将CACert.pem发送到手机即可*/
     MPVPNIKEv2Config *config = [MPVPNIKEv2Config new];
     config.configTitle = @"MPVPNManager";
     config.serverAddress = @"64.62.228.225";
@@ -51,15 +56,6 @@
     config.remoteIdentifier = @"cafre.funkernel.com";
     config.serverCertificateCommonName = @"StrongSwan Root CA";
     config.serverCertificateIssuerCommonName = @"StrongSwan Root CA";
-    
-//    NSString* path = [[NSBundle mainBundle] pathForResource:@"CACert"
-//                                                     ofType:@"pem"];
-    
-    NSString* path = [[NSBundle mainBundle] pathForResource:@"test"
-                                                     ofType:@"p12"];
-    
-    config.identityData = [NSData dataWithContentsOfFile:path];
-    config.identityDataPassword = @"test";
     _mpVpnManager = [MPVPNManager shareInstance];
     [_mpVpnManager setConfig:config with:MMPVPNManagerTypeIKEv2];
     [_mpVpnManager saveConfigCompleteHandle:^(BOOL success, NSString *returnInfo) {

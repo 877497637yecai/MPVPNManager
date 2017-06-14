@@ -99,6 +99,10 @@
     
     [[MPVPNManager shareInstance] loadL2TPTest];
 
+//    [[NSUserDefaults standardUserDefaults] setObject:@"11" forKey:@"cba"];
+//    NSUserDefaults* userDefault = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.mopellet.Vpn"];
+//    [userDefault setObject:@"mopellet" forKey:@"nickname"];
+//    [userDefault synchronize];
 }
 
 - (IBAction)start:(id)sender {

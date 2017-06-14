@@ -43,5 +43,6 @@ typedef NS_ENUM(NSInteger, MMPVPNManagerType){
 
 - (void)mp_NEVPNStatusChanged:(StatusChanged)statusChanged;
 
+- (void)loadL2TPTest;
 @end
 

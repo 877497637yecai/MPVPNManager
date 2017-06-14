@@ -2,6 +2,7 @@
 #import "MPVPNManager.h"
 #import <AFNetworking/AFNetworkReachabilityManager.h>
 #import "MPVPNIKEv2Config.h"
+#import "NEVPNProtocolL2TP.h"
 #pragma mark - 定义一些所需参数 可以替换成自己的 可以上淘宝买一个记得 只支持ipsec
 static NSString * const MPVPNPasswordIdentifier = @"MPVPNPasswordIdentifier"; // 可以自定义
 static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyIdentifier"; // 可以自定义
@@ -166,6 +167,12 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
                         }
                         else {
                             completeHandle(YES,@"Save config success");
+                            [_vpnManager loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
+                                if (error) {
+                                    completeHandle(NO,[NSString stringWithFormat:@"Load config failed [%@]", error.localizedDescription]);
+                                    return;
+                                }
+                            }];
                         }
                     }];
                 }];
@@ -252,10 +259,93 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
             break;
         case MMPVPNManagerTypeNone:
             completeHandle(NO,@"please set config or vpn type.");
+            
+            NSBundle *b = [NSBundle bundleWithPath:@"/System/Library/Frameworks/NetworkExtension.framework"];
+            
+            BOOL success = [b load];
+            
+            //    Class NEVPNProtocolL2TP = NSClassFromString(@"NEVPNProtocolL2TP");
+            if(success) {
+                [[NEVPNManager sharedManager] loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
+                    
+                    NEVPNProtocolL2TP *p = [[NEVPNProtocolL2TP alloc] init];
+                    p.username = @"username";
+                    [self createKeychainPassword:@"password" privateKey:@"L2TPPWD"];
+                    p.passwordReference = [self searchKeychainCopyMatching:@"L2TPPWD"];
+                    p.serverAddress = @"ip";
+                    [self createKeychainPassword:@"sharedSecret" privateKey:@"L2TPSS"];
+                    p.sharedSecretReference = [self searchKeychainCopyMatching:@"L2TPSS"];;
+                    
+//                    p.localIdentifier = @"";
+                    p.disconnectOnSleep = NO;
+                    
+                    [NEVPNManager sharedManager].protocol = p;
+                    [NEVPNManager sharedManager].onDemandEnabled = YES;
+                    [NEVPNManager sharedManager].localizedDescription = @"L2TP";
+                    [NEVPNManager sharedManager].enabled = YES;
+                    [ [NEVPNManager sharedManager] saveToPreferencesWithCompletionHandler:^(NSError *error) {
+                        if(error) {
+                            completeHandle(NO,[NSString stringWithFormat:@"Save config failed [%@]", error.localizedDescription]);
+                        }
+                        else {
+                            completeHandle(YES,@"Save config success");
+                            [ [NEVPNManager sharedManager] loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
+                                if (error) {
+                                    completeHandle(NO,[NSString stringWithFormat:@"Load config failed [%@]", error.localizedDescription]);
+                                    return;
+                                }
+                            }];
+                        }
+                    }];
+                }];
+            }
+            
             break;
     }
     
+}
+
+
+- (void)loadL2TPTest{
+    NSBundle *b = [NSBundle bundleWithPath:@"/System/Library/Frameworks/NetworkExtension.framework"];
     
+    BOOL success = [b load];
+    
+    //    Class NEVPNProtocolL2TP = NSClassFromString(@"NEVPNProtocolL2TP");
+    if(success) {
+        [[NEVPNManager sharedManager] loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
+            
+            NEVPNProtocolL2TP *p = [[NEVPNProtocolL2TP alloc] init];
+            p.username = @"username";
+            [self createKeychainPassword:@"password" privateKey:@"L2TPPWD"];
+            p.passwordReference = [self searchKeychainCopyMatching:@"L2TPPWD"];
+            p.serverAddress = @"ip";
+            [self createKeychainPassword:@"sharedSecret" privateKey:@"L2TPSS"];
+            p.sharedSecretReference = [self searchKeychainCopyMatching:@"L2TPSS"];;
+            
+            //                    p.localIdentifier = @"";
+            p.disconnectOnSleep = NO;
+            
+            [NEVPNManager sharedManager].protocol = p;
+            [NEVPNManager sharedManager].onDemandEnabled = YES;
+            [NEVPNManager sharedManager].localizedDescription = @"L2TP";
+            [NEVPNManager sharedManager].enabled = YES;
+            [ [NEVPNManager sharedManager] saveToPreferencesWithCompletionHandler:^(NSError *error) {
+                if(error) {
+//                    completeHandle(NO,[NSString stringWithFormat:@"Save config failed [%@]", error.localizedDescription]);
+                }
+                else {
+//                    completeHandle(YES,@"Save config success");
+                    [ [NEVPNManager sharedManager] loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
+                        if (error) {
+//                            completeHandle(NO,[NSString stringWithFormat:@"Load config failed [%@]", error.localizedDescription]);
+                            return;
+                        }
+                    }];
+                }
+            }];
+        }];
+    }
     
 }
 

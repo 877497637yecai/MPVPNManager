@@ -1,5 +1,5 @@
 # MPVPNManager
-iOS VPN 支持IPSec IKEv2 协议 三步启动 轻松畅玩
+iOS VPN 支持IPSec IKEv2 L2TP 协议 三步启动 轻松畅玩
 
 ## Description 描述
 * 支持iOS8以上的vpn 暂时支持PSec IKEv2协议
@@ -9,6 +9,11 @@ iOS VPN 支持IPSec IKEv2 协议 三步启动 轻松畅玩
 * 最后star一下，多谢各位老铁们。
 
 ## 更新日志 
+### 2017年06月15更新 
+* 增加Today Extension功能（加了个开关）
+* 增加L2TP测试功能 ([[MPVPNManager shareInstance] loadL2TPTest])
+* 优化部分代码
+* 由于没有账号请老铁们帮我测试一下L2TP功能
 ### 2017年06月13更新 
 * 增加pod支持，加入‘AFNetworking’
 * 修复获取钥匙串的值不正确的bug

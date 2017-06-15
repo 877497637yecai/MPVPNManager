@@ -46,29 +46,35 @@
     /**以下方式需要安装pem描述文件*/
     /**不需要验证信息方式*/
     /**直接用AirDrop将CACert.pem发送到手机即可*/
-//    MPVPNIKEv2Config *config = [MPVPNIKEv2Config new];
-//    config.configTitle = @"MPVPNManager";
-//    config.serverAddress = @"serverIP";
-//    config.username = @"username";
-//    config.password = @"password";
-//    config.remoteIdentifier = @"remoteIdentifier";
-//    config.serverCertificateCommonName = @"StrongSwan Root CA";
-//    config.serverCertificateIssuerCommonName = @"StrongSwan Root CA";
-//    _mpVpnManager = [MPVPNManager shareInstance];
-//    [_mpVpnManager setConfig:config with:MMPVPNManagerTypeIKEv2];
-//    [_mpVpnManager saveConfigCompleteHandle:^(BOOL success, NSString *returnInfo) {
-//        NSLog(@"returnInfo:%@",returnInfo);
-//        if (success) {
-////            [self start:nil];
-//        }
-//    }];
-//    
+    MPVPNIKEv2Config *config = [MPVPNIKEv2Config new];
+    config.configTitle = @"MPVPNManager";
+    config.serverAddress = @"serverIP";
+    config.username = @"username";
+    config.password = @"password";
+    config.remoteIdentifier = @"remoteIdentifier";
+    config.serverCertificateCommonName = @"StrongSwan Root CA";
+    config.serverCertificateIssuerCommonName = @"StrongSwan Root CA";
+    _mpVpnManager = [MPVPNManager shareInstance];
+    [_mpVpnManager setConfig:config];
+    [_mpVpnManager saveConfigCompleteHandle:^(BOOL success, NSString *returnInfo) {
+        NSLog(@"returnInfo:%@",returnInfo);
+        if (success) {
+//            [self start:nil];
+        }
+    }];
+//
 //    /**VPN连接状态的改变**/
-//    [_mpVpnManager mp_NEVPNStatusChanged:^(enum NEVPNStatus status) {
-//        [self updateTitle];
-//    }];
+    [_mpVpnManager mp_NEVPNStatusChanged:^(enum NEVPNStatus status) {
+        [self updateTitle];
+    }];
 //
     // 如果提示vpn服务器并未响应是配置账号的问题 请使用正确的账号设置MPVPNConfig即可
+    
+    /**L2TP*/
+    
+    //    [[MPVPNManager shareInstance] loadL2TPTest];
+    
+    
     
     //    // ios 9 参考
     //    {
@@ -94,15 +100,7 @@
     //        });
     //    }
     
-    
-    /**L2TP*/
-    
-    [[MPVPNManager shareInstance] loadL2TPTest];
 
-//    [[NSUserDefaults standardUserDefaults] setObject:@"11" forKey:@"cba"];
-//    NSUserDefaults* userDefault = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.mopellet.Vpn"];
-//    [userDefault setObject:@"mopellet" forKey:@"nickname"];
-//    [userDefault synchronize];
 }
 
 - (IBAction)start:(id)sender {

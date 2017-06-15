@@ -9,5 +9,5 @@
 #import "MPVPNIKEv2Config.h"
 
 @implementation MPVPNIKEv2Config
-
+MJCodingImplementation
 @end

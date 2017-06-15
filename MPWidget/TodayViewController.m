@@ -8,8 +8,11 @@
 
 #import "TodayViewController.h"
 #import <NotificationCenter/NotificationCenter.h>
-
+#import "MPCommon.h"
+#import "MPVPNManager.h"
 @interface TodayViewController () <NCWidgetProviding>
+@property (weak, nonatomic) IBOutlet UISwitch *openSwitch;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *juhuaView;
 
 @end
 
@@ -18,9 +21,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-//    NSUserDefaults* userDefault = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.mopellet.Vpn"];
-//    NSString* nickName = [userDefault objectForKey:@"nickname"];
-//    NSLog(@"%@",nickName);
+    id config = [MPCommon getConfig];
+    if (!config) {
+        NSLog(@"没有配置");
+        return; // 没有配置
+    }
+    [[MPVPNManager shareInstance] setConfig:config];
+    
+    [[MPVPNManager shareInstance] saveConfigCompleteHandle:^(BOOL success, NSString *returnInfo) {
+        NSLog(@"success:%d returnInfo:%@",success, returnInfo);
+    }];
+    
+    self.preferredContentSize = CGSizeMake(self.view.bounds.size.width,40);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -38,8 +50,32 @@
     completionHandler(NCUpdateResultNewData);
 }
 
-- (IBAction)switchAction:(id)sender {
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    self.juhuaView.hidden = YES;
     
+    [[MPVPNManager shareInstance] mp_NEVPNStatusChanged:^(enum NEVPNStatus status) {
+        if (status == NEVPNStatusConnecting) {
+            self.juhuaView.hidden = NO;
+        }
+        else {
+            self.juhuaView.hidden = YES;
+        }
+        [self refreshSwitch];
+    }];
+    [self refreshSwitch];
+}
+
+- (void)refreshSwitch {
+    self.openSwitch.on = ([NEVPNManager sharedManager].connection.status == NEVPNStatusConnected);
+}
+- (IBAction)switchAction:(id)sender {
+    if (_openSwitch.on) {
+        [[MPVPNManager shareInstance] stop];
+    }
+    else {
+        [[MPVPNManager shareInstance] start];
+    }
 }
 
 @end

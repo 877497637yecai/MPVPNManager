@@ -9,5 +9,5 @@
 #import "MPVPNIPSecConfig.h"
 
 @implementation MPVPNIPSecConfig
-
+MJCodingImplementation
 @end

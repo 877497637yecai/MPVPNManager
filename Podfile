@@ -3,4 +3,10 @@
 
 target 'MPVPNManager' do
     pod 'AFNetworking'
+    pod 'MJExtension', '= 3.0.10'
+end
+
+target 'MPWidget' do
+    pod 'AFNetworking'
+    pod 'MJExtension', '= 3.0.10'
 end

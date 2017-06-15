@@ -18,10 +18,11 @@
 typedef void(^CompleteHandle)(BOOL success , NSString * returnInfo);
 typedef void(^StatusChanged)(enum NEVPNStatus status);
 
-typedef NS_ENUM(NSInteger, MMPVPNManagerType){
-    MMPVPNManagerTypeNone,
-    MMPVPNManagerTypeIPSec,
-    MMPVPNManagerTypeIKEv2,
+typedef NS_ENUM(NSInteger, MPVPNManagerType){
+    MPVPNManagerTypeNone,
+    MPVPNManagerTypeIPSec,
+    MPVPNManagerTypeIKEv2,
+    MPVPNManagerTypeL2TP,
 };
 
 @class MPVPNConfig;
@@ -30,9 +31,9 @@ typedef NS_ENUM(NSInteger, MMPVPNManagerType){
 + (instancetype)shareInstance;
 /** config info */
 @property (nonatomic, readonly, strong) MPVPNConfig *config;
-@property (nonatomic, readonly, assign) MMPVPNManagerType vpnType;
+@property (nonatomic, readonly, assign) MPVPNManagerType vpnType;
 
-- (void)setConfig:(MPVPNConfig *)config with:(MMPVPNManagerType)vpnType;
+- (void)setConfig:(MPVPNConfig *)config;
 /** run status */
 @property (nonatomic, readonly, assign) enum NEVPNStatus status;
 /** save config */
@@ -43,6 +44,8 @@ typedef NS_ENUM(NSInteger, MMPVPNManagerType){
 
 - (void)mp_NEVPNStatusChanged:(StatusChanged)statusChanged;
 
+/**L2TP测试功能 */
 - (void)loadL2TPTest;
+
 @end
 

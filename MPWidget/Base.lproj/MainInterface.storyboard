@@ -22,15 +22,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IHL-Lj-97Q">
-                                <rect key="frame" x="135.5" y="3" width="51" height="31"/>
+                                <rect key="frame" x="10" y="3" width="51" height="31"/>
                                 <connections>
                                     <action selector="switchAction:" destination="M4Y-Lb-cyx" eventType="valueChanged" id="8Kh-Ac-Jyo"/>
                                 </connections>
                             </switch>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="dKh-T7-oDz">
+                                <rect key="frame" x="69" y="8" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="IHL-Lj-97Q" firstAttribute="centerY" secondItem="S3S-Oj-5AN" secondAttribute="centerY" id="Lal-Ai-Gzw"/>
-                            <constraint firstItem="IHL-Lj-97Q" firstAttribute="centerX" secondItem="S3S-Oj-5AN" secondAttribute="centerX" id="Sz8-cT-u4V"/>
+                            <constraint firstItem="dKh-T7-oDz" firstAttribute="centerY" secondItem="IHL-Lj-97Q" secondAttribute="centerY" id="477-Vp-wgD"/>
+                            <constraint firstItem="IHL-Lj-97Q" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leading" constant="10" id="VYO-a6-5pf"/>
+                            <constraint firstItem="IHL-Lj-97Q" firstAttribute="centerY" secondItem="S3S-Oj-5AN" secondAttribute="centerY" id="m58-N9-6HT"/>
+                            <constraint firstItem="dKh-T7-oDz" firstAttribute="leading" secondItem="IHL-Lj-97Q" secondAttribute="trailing" constant="10" id="p9L-vI-9R5"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
@@ -39,9 +44,14 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="37"/>
+                    <connections>
+                        <outlet property="juhuaView" destination="dKh-T7-oDz" id="69X-eJ-ee6"/>
+                        <outlet property="openSwitch" destination="IHL-Lj-97Q" id="JSz-X4-4v0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-446" y="17"/>
         </scene>
     </scenes>
 </document>

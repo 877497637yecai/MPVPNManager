@@ -3,17 +3,13 @@
 #import <AFNetworking/AFNetworkReachabilityManager.h>
 #import "MPVPNIKEv2Config.h"
 #import "NEVPNProtocolL2TP.h"
-#pragma mark - 定义一些所需参数 可以替换成自己的 可以上淘宝买一个记得 只支持ipsec
-static NSString * const MPVPNPasswordIdentifier = @"MPVPNPasswordIdentifier"; // 可以自定义
-static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyIdentifier"; // 可以自定义
+#import "MPCommon.h"
+//#pragma mark - 定义一些所需参数 可以替换成自己的 可以上淘宝买一个记得 只支持ipsec
+//static NSString * const MPVPNPasswordIdentifier = @"MPVPNPasswordIdentifier"; // 可以自定义
+//static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyIdentifier"; // 可以自定义
 
 @interface MPVPNManager ()
-
 @property (nonatomic, strong) NEVPNManager * vpnManager;
-@property (nonatomic, copy) void (^block)(enum NEVPNStatus status) ;
-
-@property (nonatomic, weak) NSTimer *checkStatusTimer;
-@property (nonatomic, assign) NEVPNStatus activeStatus;
 @end
 
 @implementation MPVPNManager
@@ -34,11 +30,9 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
 {
     self = [super init];
     if (self) {
-        _vpnManager = [NEVPNManager sharedManager];
-        _vpnType = MMPVPNManagerTypeNone;
+        self.vpnManager = [NEVPNManager sharedManager];
+        _vpnType = MPVPNManagerTypeNone;
         [self performSelector:@selector(registerNetWorkReachability) withObject:nil afterDelay:0.35f];
-        _activeStatus = NEVPNStatusInvalid;
-        _checkStatusTimer = [NSTimer scheduledTimerWithTimeInterval:0.2f target:self selector:@selector(timerWork:) userInfo:self repeats:YES];
     }
     return self;
 }
@@ -51,39 +45,58 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
     return _vpnManager.connection.status;
 }
 
-- (void)setConfig:(MPVPNConfig *)config with:(MMPVPNManagerType)vpnType
+- (void)setConfig:(MPVPNConfig *)config
+//             with:(MMPVPNManagerType)vpnType
 {
-
+//
+//    
+//    switch (vpnType) {
+//        case MMPVPNManagerTypeIPSec:
+//        {
+//            if (![config isKindOfClass:[MPVPNIPSecConfig class]]) {
+//                return;
+//            }
+//            _config = config;
+//            _vpnType = MMPVPNManagerTypeIPSec;
+//            MPVPNIPSecConfig *privateIPSecConfig = (MPVPNIPSecConfig *)_config;
+//            [self createKeychainPassword:privateIPSecConfig.password privateKey:privateIPSecConfig.sharePrivateKey];
+//        }
+//            break;
+//        case MMPVPNManagerTypeIKEv2:
+//        {
+//            if (![config isKindOfClass:[MPVPNIKEv2Config class]]) {
+//                return;
+//            }
+//            _config = config;
+//             _vpnType = MMPVPNManagerTypeIKEv2;
+//            MPVPNIKEv2Config *privateIKEv2Config = (MPVPNIKEv2Config *)_config;
+//            [self createKeychainPassword:privateIKEv2Config.password privateKey:privateIKEv2Config.sharePrivateKey];
+//        }
+//            break;
+//        case MMPVPNManagerTypeNone:
+//        {
+//            _config = nil;
+//            _vpnType = MMPVPNManagerTypeNone;
+//        }
+//            break;
+//    }
     
-    switch (vpnType) {
-        case MMPVPNManagerTypeIPSec:
-        {
-            if (![config isKindOfClass:[MPVPNIPSecConfig class]]) {
-                return;
-            }
-            _config = config;
-            _vpnType = MMPVPNManagerTypeIPSec;
-            MPVPNIPSecConfig *privateIPSecConfig = (MPVPNIPSecConfig *)_config;
-            [self createKeychainPassword:privateIPSecConfig.password privateKey:privateIPSecConfig.sharePrivateKey];
-        }
-            break;
-        case MMPVPNManagerTypeIKEv2:
-        {
-            if (![config isKindOfClass:[MPVPNIKEv2Config class]]) {
-                return;
-            }
-            _config = config;
-             _vpnType = MMPVPNManagerTypeIKEv2;
-            MPVPNIKEv2Config *privateIKEv2Config = (MPVPNIKEv2Config *)_config;
-            [self createKeychainPassword:privateIKEv2Config.password privateKey:privateIKEv2Config.sharePrivateKey];
-        }
-            break;
-        case MMPVPNManagerTypeNone:
-        {
-            _config = nil;
-            _vpnType = MMPVPNManagerTypeNone;
-        }
-            break;
+    
+    if ([config isKindOfClass:[MPVPNIPSecConfig class]]) {
+        _config = config;
+        _vpnType = MPVPNManagerTypeIPSec;
+        MPVPNIPSecConfig *privateIPSecConfig = (MPVPNIPSecConfig *)_config;
+        [self createKeychainPassword:privateIPSecConfig.password privateKey:privateIPSecConfig.sharePrivateKey];
+    }
+    else if ([config isKindOfClass:[MPVPNIKEv2Config class]]){
+        _config = config;
+        _vpnType = MPVPNManagerTypeIKEv2;
+        MPVPNIKEv2Config *privateIKEv2Config = (MPVPNIKEv2Config *)_config;
+        [self createKeychainPassword:privateIKEv2Config.password privateKey:privateIKEv2Config.sharePrivateKey];
+    }
+    else {
+        _config = nil;
+        _vpnType = MPVPNManagerTypeNone;
     }
    
 }
@@ -91,11 +104,11 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
 - (void) createKeychainPassword:(NSString *)password privateKey:(NSString *)privateKey
 {
     if (password.length) {
-         [self createKeychainValue:password forIdentifier:MPVPNPasswordIdentifier];
+         [MPCommon createKeychainValue:password forIdentifier:MPVPNPasswordIdentifier];
     }
    
     if (privateKey.length) {
-        [self createKeychainValue:privateKey forIdentifier:MPVPNSharePrivateKeyIdentifier];
+        [MPCommon createKeychainValue:privateKey forIdentifier:MPVPNSharePrivateKeyIdentifier];
     }
    
 }
@@ -116,7 +129,7 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
     // 2. loadFromPreferencesWithCompletionHandler 加载设置
     // 3. saveToPreferencesWithCompletionHandler 设置并存储设置
     switch (_vpnType) {
-        case MMPVPNManagerTypeIPSec:
+        case MPVPNManagerTypeIPSec:
         {
             {
                 [_vpnManager loadFromPreferencesWithCompletionHandler:^(NSError *error) {
@@ -132,14 +145,13 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
                     
                     p.username = privateIPSecConfig.username;
                     p.serverAddress = privateIPSecConfig.serverAddress;
-                    p.passwordReference = [self searchKeychainCopyMatching:MPVPNPasswordIdentifier];
-//                    p.passwordReference = privateIPSecConfig.passwordReference;
+                    p.passwordReference = [MPCommon searchKeychainCopyMatching:MPVPNPasswordIdentifier];
                     
                     if (
-                        [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier] &&
+                        [MPCommon searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier] &&
                         privateIPSecConfig.sharePrivateKey) {
                         p.authenticationMethod = NEVPNIKEAuthenticationMethodSharedSecret;
-                        p.sharedSecretReference = [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier];
+                        p.sharedSecretReference = [MPCommon searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier];
                     }
                     else if (privateIPSecConfig.identityData && privateIPSecConfig.password) {
                         p.authenticationMethod = NEVPNIKEAuthenticationMethodCertificate;
@@ -167,6 +179,7 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
                         }
                         else {
                             completeHandle(YES,@"Save config success");
+//                            [MPCommon sharedUserDefaults] setObject:<#(nullable id)#> forKey:@"MP"
                             [_vpnManager loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
                                 if (error) {
                                     completeHandle(NO,[NSString stringWithFormat:@"Load config failed [%@]", error.localizedDescription]);
@@ -180,7 +193,7 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
             
         }
             break;
-        case MMPVPNManagerTypeIKEv2:
+        case MPVPNManagerTypeIKEv2:
         {
             {
                 [_vpnManager loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
@@ -193,17 +206,17 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
                     
                     NEVPNProtocolIKEv2 *p = [NEVPNProtocolIKEv2 new];
                     p.username = privateIKEv2Config.username;
-                    p.passwordReference = [self searchKeychainCopyMatching:MPVPNPasswordIdentifier];
+                    p.passwordReference = [MPCommon searchKeychainCopyMatching:MPVPNPasswordIdentifier];
                     
                     p.serverAddress = privateIKEv2Config.serverAddress;
                     p.serverCertificateIssuerCommonName = privateIKEv2Config.serverCertificateCommonName;
                     p.serverCertificateCommonName = privateIKEv2Config.serverCertificateCommonName;
                     
                     if (
-                        [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier] &&
+                        [MPCommon searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier] &&
                         privateIKEv2Config.sharePrivateKey) {
                         p.authenticationMethod = NEVPNIKEAuthenticationMethodSharedSecret;
-                        p.sharedSecretReference = [self searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier];
+                        p.sharedSecretReference = [MPCommon searchKeychainCopyMatching:MPVPNSharePrivateKeyIdentifier];
                     }
                     else if (privateIKEv2Config.identityData && privateIKEv2Config.password) {
                         p.authenticationMethod = NEVPNIKEAuthenticationMethodCertificate;
@@ -244,6 +257,9 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
                         }
                         else {
                             completeHandle(YES,@"Save config success");
+                            [MPCommon saveConfig:_config];
+                            id conf = [MPCommon getConfig];
+                            NSLog(@"%@", [conf class]);
                             [_vpnManager loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
                                 if (error) {
                                     completeHandle(NO,[NSString stringWithFormat:@"Load config failed [%@]", error.localizedDescription]);
@@ -257,49 +273,11 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
             }
         }
             break;
-        case MMPVPNManagerTypeNone:
+        case MPVPNManagerTypeNone:
             completeHandle(NO,@"please set config or vpn type.");
-            
-            NSBundle *b = [NSBundle bundleWithPath:@"/System/Library/Frameworks/NetworkExtension.framework"];
-            
-            BOOL success = [b load];
-            
-            //    Class NEVPNProtocolL2TP = NSClassFromString(@"NEVPNProtocolL2TP");
-            if(success) {
-                [[NEVPNManager sharedManager] loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
-                    
-                    NEVPNProtocolL2TP *p = [[NEVPNProtocolL2TP alloc] init];
-                    p.username = @"username";
-                    [self createKeychainPassword:@"password" privateKey:@"L2TPPWD"];
-                    p.passwordReference = [self searchKeychainCopyMatching:@"L2TPPWD"];
-                    p.serverAddress = @"ip";
-                    [self createKeychainPassword:@"sharedSecret" privateKey:@"L2TPSS"];
-                    p.sharedSecretReference = [self searchKeychainCopyMatching:@"L2TPSS"];;
-                    
-//                    p.localIdentifier = @"";
-                    p.disconnectOnSleep = NO;
-                    
-                    [NEVPNManager sharedManager].protocol = p;
-                    [NEVPNManager sharedManager].onDemandEnabled = YES;
-                    [NEVPNManager sharedManager].localizedDescription = @"L2TP";
-                    [NEVPNManager sharedManager].enabled = YES;
-                    [ [NEVPNManager sharedManager] saveToPreferencesWithCompletionHandler:^(NSError *error) {
-                        if(error) {
-                            completeHandle(NO,[NSString stringWithFormat:@"Save config failed [%@]", error.localizedDescription]);
-                        }
-                        else {
-                            completeHandle(YES,@"Save config success");
-                            [ [NEVPNManager sharedManager] loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
-                                if (error) {
-                                    completeHandle(NO,[NSString stringWithFormat:@"Load config failed [%@]", error.localizedDescription]);
-                                    return;
-                                }
-                            }];
-                        }
-                    }];
-                }];
-            }
-            
+            break;
+        case MPVPNManagerTypeL2TP:
+            // see loadL2TPTest;
             break;
     }
     
@@ -308,22 +286,18 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
 
 - (void)loadL2TPTest{
     NSBundle *b = [NSBundle bundleWithPath:@"/System/Library/Frameworks/NetworkExtension.framework"];
-    
     BOOL success = [b load];
-    
     //    Class NEVPNProtocolL2TP = NSClassFromString(@"NEVPNProtocolL2TP");
     if(success) {
         [[NEVPNManager sharedManager] loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
             
             NEVPNProtocolL2TP *p = [[NEVPNProtocolL2TP alloc] init];
             p.username = @"username";
-            [self createKeychainPassword:@"password" privateKey:@"L2TPPWD"];
-            p.passwordReference = [self searchKeychainCopyMatching:@"L2TPPWD"];
+            [MPCommon createKeychainValue:@"password" forIdentifier:@"L2TPPWD"];
+            p.passwordReference = [MPCommon searchKeychainCopyMatching:@"L2TPPWD"];
             p.serverAddress = @"ip";
-            [self createKeychainPassword:@"sharedSecret" privateKey:@"L2TPSS"];
-            p.sharedSecretReference = [self searchKeychainCopyMatching:@"L2TPSS"];;
-            
-            //                    p.localIdentifier = @"";
+            [MPCommon createKeychainValue:@"sharedSecret" forIdentifier:@"L2TPSS"];
+            p.sharedSecretReference = [MPCommon searchKeychainCopyMatching:@"L2TPSS"];;
             p.disconnectOnSleep = NO;
             
             [NEVPNManager sharedManager].protocol = p;
@@ -370,17 +344,6 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
     }];
 }
 #pragma mark - 自动重连 END
-
-- (void)timerWork:(NSTimer *)timer {
-    if (_vpnManager.connection.status != _activeStatus) {
-        _activeStatus = _vpnManager.connection.status;
-        if (self.block) {
-            self.block(_activeStatus);
-        }
-    }
-}
-
-
 - (void)start{
     NSError *startError;
     [_vpnManager.connection startVPNTunnelAndReturnError:&startError];
@@ -424,54 +387,58 @@ static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyI
 
 - (void)mp_NEVPNStatusChanged:(StatusChanged)statusChanged
 {
-    self.block = statusChanged;
+//    self.block = statusChanged;
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:NEVPNStatusDidChangeNotification object:self.vpnManager.connection queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        statusChanged(self.vpnManager.connection.status);
+    }];
 }
-
-#pragma mark - KeyChain BEGIN
-- (NSString *)getServiceName {
-    return [[NSBundle mainBundle] bundleIdentifier];
-}
-
-- (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
-    NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
-    
-    [searchDictionary setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
-    
-    NSData *encodedIdentifier = [identifier dataUsingEncoding:NSUTF8StringEncoding];
-    [searchDictionary setObject:encodedIdentifier forKey:(__bridge id)kSecAttrGeneric];
-    [searchDictionary setObject:encodedIdentifier forKey:(__bridge id)kSecAttrAccount];
-    [searchDictionary setObject:[self getServiceName] forKey:(__bridge id)kSecAttrService];
-    
-    return searchDictionary;
-}
-
-- (NSData *)searchKeychainCopyMatching:(NSString *)identifier {
-    NSMutableDictionary *searchDictionary = [self newSearchDictionary:identifier];
-    
-    [searchDictionary setObject:(__bridge id)kSecMatchLimitOne forKey:(__bridge id)kSecMatchLimit];
-    [searchDictionary setObject:@YES forKey:(__bridge id)kSecReturnPersistentRef];
-    
-    CFTypeRef result = NULL;
-    SecItemCopyMatching((__bridge CFDictionaryRef)searchDictionary, &result);
-    
-    return (__bridge_transfer NSData *)result;
-}
-
-- (BOOL)createKeychainValue:(NSString *)password forIdentifier:(NSString *)identifier {
-    NSMutableDictionary *dictionary = [self newSearchDictionary:identifier];
-    
-    OSStatus status = SecItemDelete((__bridge CFDictionaryRef)dictionary);
-    
-    NSData *passwordData = [password dataUsingEncoding:NSUTF8StringEncoding];
-    [dictionary setObject:passwordData forKey:(__bridge id)kSecValueData];
-    
-    status = SecItemAdd((__bridge CFDictionaryRef)dictionary, NULL);
-    
-    if (status == errSecSuccess) {
-        return YES;
-    }
-    return NO;
-}
-#pragma mark - KeyChain END
+//
+//#pragma mark - KeyChain BEGIN
+//- (NSString *)getServiceName {
+//    return [[NSBundle mainBundle] bundleIdentifier];
+//}
+//
+//- (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
+//    NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
+//    
+//    [searchDictionary setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
+//    
+//    NSData *encodedIdentifier = [identifier dataUsingEncoding:NSUTF8StringEncoding];
+//    [searchDictionary setObject:encodedIdentifier forKey:(__bridge id)kSecAttrGeneric];
+//    [searchDictionary setObject:encodedIdentifier forKey:(__bridge id)kSecAttrAccount];
+//    [searchDictionary setObject:[self getServiceName] forKey:(__bridge id)kSecAttrService];
+//    
+//    return searchDictionary;
+//}
+//
+//- (NSData *)searchKeychainCopyMatching:(NSString *)identifier {
+//    NSMutableDictionary *searchDictionary = [self newSearchDictionary:identifier];
+//    
+//    [searchDictionary setObject:(__bridge id)kSecMatchLimitOne forKey:(__bridge id)kSecMatchLimit];
+//    [searchDictionary setObject:@YES forKey:(__bridge id)kSecReturnPersistentRef];
+//    
+//    CFTypeRef result = NULL;
+//    SecItemCopyMatching((__bridge CFDictionaryRef)searchDictionary, &result);
+//    
+//    return (__bridge_transfer NSData *)result;
+//}
+//
+//- (BOOL)createKeychainValue:(NSString *)password forIdentifier:(NSString *)identifier {
+//    NSMutableDictionary *dictionary = [self newSearchDictionary:identifier];
+//    
+//    OSStatus status = SecItemDelete((__bridge CFDictionaryRef)dictionary);
+//    
+//    NSData *passwordData = [password dataUsingEncoding:NSUTF8StringEncoding];
+//    [dictionary setObject:passwordData forKey:(__bridge id)kSecValueData];
+//    
+//    status = SecItemAdd((__bridge CFDictionaryRef)dictionary, NULL);
+//    
+//    if (status == errSecSuccess) {
+//        return YES;
+//    }
+//    return NO;
+//}
+//#pragma mark - KeyChain END
 
 @end

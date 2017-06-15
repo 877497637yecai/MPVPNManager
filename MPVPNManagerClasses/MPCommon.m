@@ -39,7 +39,8 @@ NSString * const MPVPNPasswordIdentifier = @"MPVPNPasswordIdentifier";
 NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyIdentifier";
 
 + (NSString *)getServiceName {
-    return [[NSBundle mainBundle] bundleIdentifier];
+//    return [[NSBundle mainBundle] bundleIdentifier];
+    return @"mpvpn.vpnconfig.service";
 }
 
 + (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {

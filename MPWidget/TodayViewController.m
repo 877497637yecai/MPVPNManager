@@ -32,7 +32,7 @@
         NSLog(@"success:%d returnInfo:%@",success, returnInfo);
     }];
     
-    self.preferredContentSize = CGSizeMake(self.view.bounds.size.width,40);
+    self.preferredContentSize = CGSizeMake(0,40);
 }
 
 - (void)didReceiveMemoryWarning {

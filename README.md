@@ -91,9 +91,10 @@ iOS VPN 支持IPSec IKEv2 L2TP 协议 三步启动 轻松畅玩
     
 
 ## 联系方式:
-* WeChat : wzw351420450
+* QQ : 351420450
 * Email : mopellet@foxmail.com
 * Resume : [个人简历](https://github.com/MoPellet/Resume)
+* 欢迎加入QQ交流群：[](/qqgroup.png)
 
 ## 特别鸣谢:
 * 您的star的我开发的动力，如果代码对您有帮助麻烦动动您的小手指点个start。

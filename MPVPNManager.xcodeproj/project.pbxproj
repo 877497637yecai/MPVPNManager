@@ -18,8 +18,7 @@
 		A478C2E51EF21EC0006E7BC8 /* MPVPNIPSecConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = A4E90BE11EDEAE30003B86D8 /* MPVPNIPSecConfig.m */; };
 		A478C2E61EF21EC3006E7BC8 /* MPVPNIKEv2Config.m in Sources */ = {isa = PBXBuildFile; fileRef = A4E90BE41EDEAE56003B86D8 /* MPVPNIKEv2Config.m */; };
 		A478C2E71EF21EC9006E7BC8 /* MPVPNManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA750901EDC9DC6000E6524 /* MPVPNManager.m */; };
-		A478C2EB1EF25372006E7BC8 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A478C2EA1EF25372006E7BC8 /* NetworkExtension.framework */; };
-		A478C2EC1EF25379006E7BC8 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A478C2EA1EF25372006E7BC8 /* NetworkExtension.framework */; };
+		A4A00B4A1EFA6AC7001066E3 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4A00B491EFA6AC7001066E3 /* NetworkExtension.framework */; };
 		A4E90BDF1EDEAE0D003B86D8 /* MPVPNConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = A4E90BDE1EDEAE0D003B86D8 /* MPVPNConfig.m */; };
 		A4E90BE21EDEAE30003B86D8 /* MPVPNIPSecConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = A4E90BE11EDEAE30003B86D8 /* MPVPNIPSecConfig.m */; };
 		A4E90BE51EDEAE56003B86D8 /* MPVPNIKEv2Config.m in Sources */ = {isa = PBXBuildFile; fileRef = A4E90BE41EDEAE56003B86D8 /* MPVPNIKEv2Config.m */; };
@@ -73,7 +72,7 @@
 		A478C2DF1EF14EC9006E7BC8 /* MPWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MPWidget.entitlements; sourceTree = "<group>"; };
 		A478C2E01EF219C4006E7BC8 /* MPCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPCommon.h; sourceTree = "<group>"; };
 		A478C2E11EF219C4006E7BC8 /* MPCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPCommon.m; sourceTree = "<group>"; };
-		A478C2EA1EF25372006E7BC8 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		A4A00B491EFA6AC7001066E3 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		A4E90BDD1EDEAE0D003B86D8 /* MPVPNConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPVPNConfig.h; sourceTree = "<group>"; };
 		A4E90BDE1EDEAE0D003B86D8 /* MPVPNConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPVPNConfig.m; sourceTree = "<group>"; };
 		A4E90BE01EDEAE30003B86D8 /* MPVPNIPSecConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPVPNIPSecConfig.h; sourceTree = "<group>"; };
@@ -103,7 +102,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A478C2CF1EF149A0006E7BC8 /* NotificationCenter.framework in Frameworks */,
-				A478C2EB1EF25372006E7BC8 /* NetworkExtension.framework in Frameworks */,
+				A4A00B4A1EFA6AC7001066E3 /* NetworkExtension.framework in Frameworks */,
 				BC6D280C562FE900BF2BFF44 /* libPods-MPWidget.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -113,7 +112,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				485C9B689A039485EA1B6842 /* libPods-MPVPNManager.a in Frameworks */,
-				A478C2EC1EF25379006E7BC8 /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,7 +121,7 @@
 		10F444D88AA1D14772C5C97E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A478C2EA1EF25372006E7BC8 /* NetworkExtension.framework */,
+				A4A00B491EFA6AC7001066E3 /* NetworkExtension.framework */,
 				445A94A8896E585A7E3EAA2E /* libPods-MPVPNManager.a */,
 				A478C2CE1EF149A0006E7BC8 /* NotificationCenter.framework */,
 				5CEF40F0C4C824C1AFE4B10F /* libPods-MPWidget.a */,

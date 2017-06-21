@@ -2,8 +2,9 @@
 #import "MPVPNManager.h"
 #import <AFNetworking/AFNetworkReachabilityManager.h>
 #import "MPVPNIKEv2Config.h"
-#import "NEVPNProtocolL2TP.h"
+//#import "NEVPNProtocolL2TP.h"
 #import "MPCommon.h"
+#include <dlfcn.h>
 //#pragma mark - 定义一些所需参数 可以替换成自己的 可以上淘宝买一个记得 只支持ipsec
 //static NSString * const MPVPNPasswordIdentifier = @"MPVPNPasswordIdentifier"; // 可以自定义
 //static NSString * const MPVPNSharePrivateKeyIdentifier = @"MPVPNSharePrivateKeyIdentifier"; // 可以自定义
@@ -288,30 +289,57 @@
     NSBundle *b = [NSBundle bundleWithPath:@"/System/Library/Frameworks/NetworkExtension.framework"];
     BOOL success = [b load];
     //    Class NEVPNProtocolL2TP = NSClassFromString(@"NEVPNProtocolL2TP");
+    void *lib = dlopen("/System/Library/Frameworks/NetworkExtension.framework", RTLD_LAZY);
     if(success) {
-        [[NEVPNManager sharedManager] loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
+        [_vpnManager loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
             
-            NEVPNProtocolL2TP *p = [[NEVPNProtocolL2TP alloc] init];
-            p.username = @"username";
-            [MPCommon createKeychainValue:@"password" forIdentifier:@"L2TPPWD"];
+            Class NEVPNProtocolL2TP = NSClassFromString(@"NEVPNProtocolL2TP");
+            if (NEVPNProtocolL2TP) {
+                NSLog(@"找到当前类");
+            }
+//            NEVPNProtocolL2TP *p = [[NEVPNProtocolL2TP alloc] init];
+            NEVPNProtocol *p = [[NEVPNProtocolL2TP alloc] init];
+            
+            p.username = @"ZEE";
+            [MPCommon createKeychainValue:@"ZEE" forIdentifier:@"L2TPPWD"];
             p.passwordReference = [MPCommon searchKeychainCopyMatching:@"L2TPPWD"];
-            p.serverAddress = @"ip";
-            [MPCommon createKeychainValue:@"sharedSecret" forIdentifier:@"L2TPSS"];
-            p.sharedSecretReference = [MPCommon searchKeychainCopyMatching:@"L2TPSS"];;
+            p.serverAddress = @"47.91.167.23";
+            [MPCommon createKeychainValue:@"vpn" forIdentifier:@"L2TPSS"];
+//            p.sharedSecretReference = [MPCommon searchKeychainCopyMatching:@"L2TPSS"];
+            
+            [p performSelector:@selector(setSharedSecretReference:) withObject:[MPCommon searchKeychainCopyMatching:@"L2TPSS"]];
             p.disconnectOnSleep = NO;
             
             [NEVPNManager sharedManager].protocol = p;
             [NEVPNManager sharedManager].onDemandEnabled = YES;
             [NEVPNManager sharedManager].localizedDescription = @"L2TP";
             [NEVPNManager sharedManager].enabled = YES;
+           
+//            NEVPNProtocol * rp = [[NEVPNManager sharedManager] protocolConfiguration];
+//           BOOL hav = [[NEVPNManager sharedManager] respondsToSelector:@selector(isProtocolTypeValid:)];
+//           BOOL hav1 = [rp respondsToSelector:@selector(type)];
+//            if (hav1) {
+////                [rp performSelector:@selector(type)];
+////                rp 
+////                NSMethodSignature *signature = [rp instanceMethodSignatureForSelector:@selector(type)];
+////                NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+////                invocation.target = rp;
+////                invocation.selector = @selector(type);
+//            }
+//            id a = [rp performSelector:@selector(type)];
+            
+            NSLog(@"ok");
+            
             [ [NEVPNManager sharedManager] saveToPreferencesWithCompletionHandler:^(NSError *error) {
                 if(error) {
+                    NSLog(@"Save config failed:%@",error);
 //                    completeHandle(NO,[NSString stringWithFormat:@"Save config failed [%@]", error.localizedDescription]);
                 }
                 else {
-//                    completeHandle(YES,@"Save config success");
+                    NSLog(@"Save config success");
                     [ [NEVPNManager sharedManager] loadFromPreferencesWithCompletionHandler:^(NSError * _Nullable error) {
                         if (error) {
+                            NSLog(@"re Save config failed:%@",error);
 //                            completeHandle(NO,[NSString stringWithFormat:@"Load config failed [%@]", error.localizedDescription]);
                             return;
                         }
@@ -322,6 +350,8 @@
     }
     
 }
+
+
 
 #pragma mark -
 #pragma mark - 自动重连 BEGIN

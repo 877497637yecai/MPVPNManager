@@ -9,9 +9,19 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>MPWidget.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>A478C2CC1EF149A0006E7BC8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>CC197CF71EDC863600ACA743</key>
 		<dict>
 			<key>primary</key>

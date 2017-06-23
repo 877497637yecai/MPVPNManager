@@ -9,20 +9,27 @@ iOS VPN 支持IPSec IKEv2 L2TP 协议 三步启动 轻松畅玩
 * 最后star一下，多谢各位老铁们。
 
 ## 更新日志 
-### 2017年06月15更新 
+#### 2017年06月24
+* 优化测试代码结构
+* 添加一些注释等
+
+#### 2017年06月15 
 * 增加Today Extension功能（加了个开关）
 * 增加L2TP测试功能 ([[MPVPNManager shareInstance] loadL2TPTest])
 * 优化部分代码
 * 由于没有账号请老铁们帮我测试一下L2TP功能
-### 2017年06月13更新 
+
+#### 2017年06月13 
 * 增加pod支持，加入‘AFNetworking’
 * 修复获取钥匙串的值不正确的bug
 * 优化部分代码
 * 修复首次加载执行不成功的bug
-### 2017年05月31更新 
+
+#### 2017年05月31 
 * 增加IKEv2支持
 * 重写部分接口代码
-### 2017年05月30更新 
+
+#### 2017年05月30
 * 重写大部分源码增加可读性
 * 修复断线重连的bug
 
@@ -53,7 +60,7 @@ iOS VPN 支持IPSec IKEv2 L2TP 协议 三步启动 轻松畅玩
     [_mpVpnManager saveConfigCompleteHandle:^(BOOL success, NSString *returnInfo) {
         NSLog(@"returnInfo:%@",returnInfo);
         if (success) {
-            [self start:nil];
+        
         }
     }];
 ```
@@ -77,18 +84,28 @@ iOS VPN 支持IPSec IKEv2 L2TP 协议 三步启动 轻松畅玩
     [_mpVpnManager saveConfigCompleteHandle:^(BOOL success, NSString *returnInfo) {
         NSLog(@"returnInfo:%@",returnInfo);
         if (success) {
-            [self start:nil];
+        
         }
     }];
 ```
+* 7、L2TP BATE 
+
+```objc
+	// L2TP 请自行修改测试代码
+	[[MPVPNManager shareInstance] loadL2TPTest];
+```
+
+* 7、开启或者关闭
+
+```objc
+	[_mpVpnManager start];
+	[_mpVpnManager stop];
+```
 
 ## 注意
-* 如果提示vpn服务器并未响应是配置账号的问题 请使用正确的账号设置MPVPNConfig即可
-
-
-## 相关资料
-* [Configure and manage VPN connections programmatically in iOS 8](http://ramezanpour.net/post/2014/08/03/configure-and-manage-vpn-connections-programmatically-in-ios-8/)
-    
+* 如果提示vpn服务器并未响应是配置账号的问题 请优先确保账号正确型，可在macOS或者iOS系统自带的VPN测试
+* 服务端可以用 [strongswan](https://www.strongswan.org/)
+* 服务端配置可参考 [https://raymii.org/s/tags/vpn.html](https://raymii.org/s/tags/vpn.html)
 
 ## 联系方式:
 * QQ : 351420450

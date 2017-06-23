@@ -93,7 +93,7 @@ iOS VPN 支持IPSec IKEv2 L2TP 协议 三步启动 轻松畅玩
 ## 联系方式:
 * QQ : 351420450
 * Email : mopellet@foxmail.com
-* Resume : [个人简历](https://github.com/MoPellet/Resume)
+* 商务合作支持：iOS、Android、Windows、macOS，具体请加QQ详谈
 * 更多相关问题欢迎加入QQ交流群（群号：92073722）![](qqgroup.png)
 
 ## 特别鸣谢:

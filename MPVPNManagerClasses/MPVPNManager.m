@@ -356,7 +356,7 @@
 #pragma mark -
 #pragma mark - 自动重连 BEGIN
 - (void)registerNetWorkReachability{
-    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+//    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetWork) name:AFNetworkingReachabilityDidChangeNotification object:nil];
     
 }
@@ -375,6 +375,7 @@
 }
 #pragma mark - 自动重连 END
 - (void)start{
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     NSError *startError;
     [_vpnManager.connection startVPNTunnelAndReturnError:&startError];
     if (startError) {
@@ -409,6 +410,7 @@
 }
 
 - (void)stop{
+    [[AFNetworkReachabilityManager sharedManager] stopMonitoring];
     [_vpnManager.connection stopVPNTunnel];
     NSLog(@"VPN has stopped success");
     [self outPutConnectionStatus];
